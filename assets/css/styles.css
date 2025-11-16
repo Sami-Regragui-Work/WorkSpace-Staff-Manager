@@ -196,8 +196,8 @@
   .grid {
     display: grid;
   }
-  .aspect-430\/244 {
-    aspect-ratio: 430/244;
+  .aspect-430\/243 {
+    aspect-ratio: 430/243;
   }
   .h-dvh {
     height: 100dvh;
@@ -243,9 +243,6 @@
   }
   .bg-\(--bg-secondary-clr\) {
     background-color: var(--bg-secondary-clr);
-  }
-  .bg-\[\#0011ff96\] {
-    background-color: #0011ff96;
   }
   .p-\(--padding-bigger\) {
     padding: var(--padding-bigger);
@@ -334,14 +331,6 @@ h2 {
   grid-template-rows: auto auto auto;
   grid-template-areas: "room-1 room-1 passage-1 room-2 room-3" "room-4 room-4 passage-2 passage-2 passage-2" "room-4 room-4 passage-3 room-5 room-6";
 }
-.room:not(#room-1):not(#room-4) {
-  width: 95%;
-  margin-left: 3%;
-}
-.passage:not(#passage-2) {
-  width: 96%;
-  margin-left: 3%;
-}
 #room-1 {
   grid-area: room-1;
   background-color: rgba(0, 128, 0, 0.697);
@@ -359,23 +348,26 @@ h2 {
 #room-4 {
   grid-area: room-4;
   background-color: rgba(137, 43, 226, 0.697);
-  margin-top: 1%;
+  margin-top: 1.5%;
   width: 98.5%;
   height: 97.5%;
 }
 #room-5 {
   grid-area: room-5;
   background-color: rgba(0, 128, 0, 0.697);
-  width: 94% !important;
-  margin-left: 4% !important;
+  width: 94%;
+  margin-left: 4%;
 }
 #room-6 {
   grid-area: room-6;
   background-color: rgba(137, 43, 226, 0.697);
+  height: 99%;
 }
 #passage-1 {
   grid-area: passage-1;
   background-color: rgba(255, 217, 0, 0.697);
+  height: 107%;
+  width: 96%;
 }
 #passage-2 {
   grid-area: passage-2;
@@ -388,11 +380,23 @@ h2 {
 #passage-3 {
   grid-area: passage-3;
   background-color: rgba(255, 217, 0, 0.697);
-  width: 97% !important;
+  margin-top: -6%;
+  width: 97%;
 }
-#passage-3, #room-5, #room-6 {
-  height: 98%;
+#room-2, #room-3 {
+  width: 95%;
+  margin-left: 3%;
+  height: 101%;
+}
+#room-5, #room-6 {
   margin-top: -0.5%;
+}
+#room-3, #room-6 {
+  margin-left: 2%;
+  width: 96%;
+}
+.passage:not(#passage-2) {
+  margin-left: 3%;
 }
 @property --tw-font-weight {
   syntax: "*";

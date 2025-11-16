@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+    --primary-clr: oklch(59.207% 0.21386 257.434); /* #0077f9 */
+    --secondary-clr: oklch(83.854% 0.17086 83.341); /* #ffc107 */
+    --dark-blue-clr: oklch(47.952% 0.16437 256.113); /* #0058b8 */
+    --grad-blue-to-dark-clr: linear-gradient(
+        to right,
+        var(--primary-clr) 0%,
+        var(--dark-blue-clr) 100%
+    );
+    --bold-text-clr: oklch(26.035% 0.00983 268.315); /* #222329 */
+    --regular-text-clr: black;
+    --accent-clr: oklch(54.879% 0.01443 229.287); /* #6b747b */
+    --bg-primary-clr: white;
+    --bg-secondary-clr: oklch(98.032% 0.01383 219.982); /* #f0f8ff */
+
+    --fs-h2: 2.4rem;
+    --fs-h3: 1.8rem;
+    --fs-btn: 1.6rem;
+    --fs-text: 1.4rem;
+
+    --fw-h: 700;
+    --fw-btn: 600;
+    --fw-label: 500;
+    --fw-text: 400;
+
+    --padding-g: 12px;
+    --padding-bigger: 12px 22px;
+    --gap: 5rem;
+    --b-r: 12px;
+}
+
+html {
+    font-size: 10px;
+}
+
+h2 {
+    @apply text-(--primary-clr) font-(--fw-h);
+    font-size: var(--fs-h2);
+}
+
+.btn {
+    @apply h-[5rem] rounded-(--b-r) cursor-pointer hover:bg-none hover:border-2;
+    font-size: var(--fs-btn);
+}
+
+.btn--primary {
+    @apply text-(--bg-primary-clr) hover:bg-(--bg-primary-clr) hover:text-(--primary-clr) hover:border-(--primary-clr);
+    background: var(--grad-blue-to-dark-clr);
+}
+
+.center {
+    background: url("../images/workers-studio-87kb.webp") no-repeat
+        center/contain;
+    /* background-size: 100%; */
+}
+
+.rooms {
+    grid-template-columns: repeat(2, 19%) 16.5% repeat(2, 23%);
+    grid-template-rows: auto auto auto;
+    /* grid-auto-columns: 19%; */
+    grid-template-areas:
+        "room-1 room-1 passage-1 room-2 room-3"
+        "room-4 room-4 passage-2 passage-2 passage-2"
+        "room-4 room-4 passage-3 room-5 room-6";
+}
+
+/* .passage {
+    width: 90%;
+} */
+/* .room {
+    width: 98.5%;
+    height: 97%;
+    margin-bottom: 0.5%;
+} */
+
+.room:not(#room-1):not(#room-4) {
+    width: 95%;
+    margin-left: 3%;
+}
+
+.passage:not(#passage-2) {
+    width: 96%;
+    margin-left: 3%;
+}
+
+#room-1 {
+    grid-area: room-1;
+    background-color: rgba(0, 128, 0, 0.697);
+
+    width: 98.5%;
+    height: 97%;
+    /* margin-bottom: 0.4%; */
+}
+#room-2 {
+    grid-area: room-2;
+    background-color: rgba(137, 43, 226, 0.697);
+}
+#room-3 {
+    grid-area: room-3;
+    background-color: rgba(0, 128, 0, 0.697);
+}
+#room-4 {
+    grid-area: room-4;
+    background-color: rgba(137, 43, 226, 0.697);
+    margin-top: 1%;
+    width: 98.5%;
+    height: 97.5%;
+}
+#room-5 {
+    grid-area: room-5;
+    background-color: rgba(0, 128, 0, 0.697);
+
+    width: 94% !important;
+    margin-left: 4% !important;
+}
+#room-6 {
+    grid-area: room-6;
+    background-color: rgba(137, 43, 226, 0.697);
+}
+
+#passage-1 {
+    grid-area: passage-1;
+    background-color: rgba(255, 217, 0, 0.697);
+}
+#passage-2 {
+    grid-area: passage-2;
+    background-color: rgba(255, 255, 255, 0.697);
+
+    width: 98.3%;
+    margin-left: 1%;
+    height: 88%;
+    margin-top: 2%;
+}
+#passage-3 {
+    grid-area: passage-3;
+    background-color: rgba(255, 217, 0, 0.697);
+
+    width: 97% !important;
+}
+
+#passage-3,
+#room-5,
+#room-6 {
+    height: 98%;
+    margin-top: -0.5%;
+}

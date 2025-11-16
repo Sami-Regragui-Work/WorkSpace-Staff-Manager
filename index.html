@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="assets/css/styles.css" />
+        <title>WorkSpace Staff Manager</title>
+    </head>
+    <body>
+        <main
+            class="container flex bg-(--bg-secondary-clr) h-dvh min-w-dvw overflow-y-hidden p-(--padding-g) min-h-[300px]"
+        >
+            <aside
+                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger)"
+            >
+                <h2>Staff Members</h2>
+                <button class="btn btn--primary mt-auto">Add New Worker</button>
+            </aside>
+            <div
+                class="center flex-2 m-(--padding-g) flex justify-center items-center"
+            >
+                <div class="wrapper w-full aspect-430/244 mx-[1%] mt-[0.5%]">
+                    <!-- for responsivity, turn w-full to h-full when screen max-height reaches the wrapper height -->
+                    <div class="rooms grid h-full bg-[#0011ff96]">
+                        <div id="room-1" class="room"></div>
+                        <div id="passage-1" class="passage"></div>
+                        <div id="room-2" class="room"></div>
+                        <div id="room-3" class="room"></div>
+                        <div id="room-4" class="room"></div>
+                        <div id="passage-2" class="passage"></div>
+                        <div id="passage-3" class="passage"></div>
+                        <div id="room-5" class="room"></div>
+                        <div id="room-6" class="room"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

@@ -41,15 +41,18 @@ h2 {
 }
 
 .btn {
-    @apply h-[5rem] rounded-(--b-r) cursor-pointer hover:bg-none hover:border-2;
+    @apply rounded-(--b-r) cursor-pointer hover:bg-none hover:bg-transparent hover:border-2 font-(--fw-btn);
     font-size: var(--fs-btn);
 }
 
 .btn--primary {
-    @apply text-(--bg-primary-clr) hover:bg-(--bg-primary-clr) hover:text-(--primary-clr) hover:border-(--primary-clr);
+    @apply h-[5rem] text-(--bg-primary-clr) hover:bg-(--bg-primary-clr) hover:text-(--primary-clr) hover:border-(--primary-clr);
     background: var(--grad-blue-to-dark-clr);
 }
 
+.btn--small {
+    @apply text-(--bg-primary-clr) bg-(--primary-clr) aspect-square w-12  hover:bg-(--dark-blue-clr);
+}
 .center {
     background: url("../images/workers-studio-87kb.webp") no-repeat
         center/contain;
@@ -66,6 +69,20 @@ h2 {
         "room-4 room-4 passage-3 room-5 room-6";
 }
 
+.room {
+    @apply flex flex-col items-center pb-3;
+}
+
+.room span {
+    @apply font-(--fw-label) text-(--bold-text-clr) relative top-[40%] text-shadow-[0_0_4px_var(--bg-secondary-clr)];
+    /* font-size: var(--fs-text); */
+    font-size: 1vw;
+}
+
+.room button {
+    @apply mt-auto;
+}
+
 /* .passage {
     width: 90%;
 } */
@@ -77,75 +94,76 @@ h2 {
 
 #room-1 {
     grid-area: room-1;
-    background-color: rgba(0, 128, 0, 0.697);
+    /* background-color: rgba(0, 128, 0, 0.697); */
 
     width: 98.5%;
-    height: 97%;
+    height: 96%;
     /* margin-bottom: 0.4%; */
 }
 #room-2 {
     grid-area: room-2;
-    background-color: rgba(137, 43, 226, 0.697);
+    /* background-color: rgba(137, 43, 226, 0.697); */
 }
 #room-3 {
     grid-area: room-3;
-    background-color: rgba(0, 128, 0, 0.697);
+    /* background-color: rgba(0, 128, 0, 0.697); */
 }
 #room-4 {
     grid-area: room-4;
-    background-color: rgba(137, 43, 226, 0.697);
-    margin-top: 1.5%;
+    /* background-color: rgba(137, 43, 226, 0.697); */
     width: 98.5%;
-    height: 97.5%;
+    height: 99%;
 }
 #room-5 {
     grid-area: room-5;
-    background-color: rgba(0, 128, 0, 0.697);
+    /* background-color: rgba(0, 128, 0, 0.697); */
 
     width: 94%;
     margin-left: 4%;
 }
 #room-6 {
     grid-area: room-6;
-    background-color: rgba(137, 43, 226, 0.697);
+    /* background-color: rgba(137, 43, 226, 0.697); */
 
-    height: 99%;
+    /* height: 99%; */
 }
 
 #passage-1 {
     grid-area: passage-1;
-    background-color: rgba(255, 217, 0, 0.697);
+    /* background-color: rgba(255, 217, 0, 0.697); */
 
     height: 107%;
     width: 96%;
 }
 #passage-2 {
     grid-area: passage-2;
-    background-color: rgba(255, 255, 255, 0.697);
+    /* background-color: rgba(255, 255, 255, 0.697); */
 
     width: 98.3%;
     margin-left: 1%;
-    height: 88%;
+    height: 132%;
     margin-top: 2%;
 }
 #passage-3 {
     grid-area: passage-3;
-    background-color: rgba(255, 217, 0, 0.697);
+    /* background-color: rgba(255, 217, 0, 0.697); */
 
-    margin-top: -6%;
+    margin-top: 15%;
     width: 97%;
+    height: 87%;
 }
 
 #room-2,
 #room-3 {
     width: 95%;
     margin-left: 3%;
-    height: 101%;
+    height: 99%;
 }
 
 #room-5,
 #room-6 {
-    margin-top: -0.5%;
+    height: 72%;
+    margin-top: 28%;
 }
 
 #room-3,

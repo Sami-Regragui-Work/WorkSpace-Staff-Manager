@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    },
+    {
+        "id": 2,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    },
+    {
+        "id": 3,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    },
+    {
+        "id": 4,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    },
+    {
+        "id": 5,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    },
+    {
+        "id": 6,
+        "title": "whatever",
+        "workersIds": [],
+        "allowedRoles": [],
+        "capacity": 5
+    }
+]

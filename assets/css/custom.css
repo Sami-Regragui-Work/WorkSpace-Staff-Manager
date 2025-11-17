@@ -27,6 +27,7 @@
 
     --padding-g: 12px;
     --padding-bigger: 12px 22px;
+    --padding-exp: 22px 12px;
     --gap: 5rem;
     --b-r: 12px;
 }
@@ -41,22 +42,37 @@ h2 {
 }
 
 .btn {
-    @apply rounded-(--b-r) cursor-pointer hover:bg-none hover:bg-transparent hover:border-2 font-(--fw-btn);
+    @apply rounded-(--b-r) cursor-pointer hover:bg-none hover:bg-transparent font-(--fw-btn) aspect-auto;
     font-size: var(--fs-btn);
 }
 
 .btn--primary {
-    @apply h-[5rem] text-(--bg-primary-clr) hover:bg-(--bg-primary-clr) hover:text-(--primary-clr) hover:border-(--primary-clr);
+    @apply h-[5rem] text-(--bg-primary-clr) hover:bg-(--bg-primary-clr) hover:text-(--primary-clr) hover:shadow-[0_0_0_2px_inset_var(--primary-clr)];
     background: var(--grad-blue-to-dark-clr);
 }
 
 .btn--small {
     @apply text-(--bg-primary-clr) bg-(--primary-clr) aspect-square w-12  hover:bg-(--dark-blue-clr);
 }
+
+.btn--modal {
+    @apply h-[3rem] w-fit px-5;
+    font-size: var(--fs-text);
+}
+
+.btn--secondary {
+    @apply text-(--accent-clr) shadow-[0_0_0_2px_inset_var(--accent-clr)] hover:text-(--bg-primary-clr) hover:bg-(--accent-clr);
+}
+
+.btn--exp {
+    @apply text-(--bg-primary-clr) bg-(--secondary-clr) shadow-[0_0_0_2px_inset_var(--secondary-clr)] hover:text-(--secondary-clr);
+}
+
 .center {
     background: url("../images/workers-studio-87kb.webp") no-repeat
         center/contain;
     /* background-size: 100%; */
+    /* color: */
 }
 
 .rooms {
@@ -70,7 +86,7 @@ h2 {
 }
 
 .room {
-    @apply flex flex-col items-center pb-3;
+    @apply flex flex-col items-center pb-3 relative;
 }
 
 .room span {
@@ -80,7 +96,7 @@ h2 {
 }
 
 .room button {
-    @apply mt-auto;
+    @apply absolute bottom-[5%];
 }
 
 /* .passage {
@@ -174,4 +190,22 @@ h2 {
 
 .passage:not(#passage-2) {
     margin-left: 3%;
+}
+
+/* customize flowbite modal */
+
+/* #crud-modal > * {
+    color-scheme: light !important;
+} */
+
+label {
+    @apply font-(--fw-label) text-(--accent-clr) block mb-2;
+}
+
+.img {
+    @apply rounded-[50%] aspect-square border-2;
+}
+
+.img--modal {
+    @apply h-[8rem] border-(--accent-clr);
 }

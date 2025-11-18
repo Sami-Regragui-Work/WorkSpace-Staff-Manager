@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="assets/css/styles.css" />
         <script src="assets/js/workersCRUD.js" defer></script>
+        <script src="assets/js/sideBarCollapse.js" defer></script>
         <!-- flow-bite script -->
         <script
             src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"
@@ -14,7 +15,7 @@
     </head>
     <body>
         <main
-            class="container flex bg-(--bg-secondary-clr) h-dvh min-w-dvw overflow-y-hidden p-(--padding-g) min-h-[300px]"
+            class="container flex bg-(--bg-secondary-clr) h-dvh min-w-dvw p-(--padding-g) min-h-[300px]"
         >
             <!-- Main modal -->
             <div
@@ -23,7 +24,7 @@
                 aria-hidden="true"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full bg-[rgba(0,0,0,0.6)]"
             >
-                <div class="relative p-4 w-[80%] max-h-full">
+                <div class="relative p-4 w-[60%] max-h-full">
                     <!-- Modal content -->
                     <div class="relative bg-white rounded-lg shadow-sm">
                         <!-- Modal header -->
@@ -75,7 +76,9 @@
                                         id="role"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                                     >
-                                        <option selected>Select role</option>
+                                        <option selected value="">
+                                            Select role
+                                        </option>
                                         <option value="1">Receptionist</option>
                                         <option value="2">IT Technician</option>
                                         <option value="3">
@@ -223,9 +226,49 @@
             </div>
 
             <aside
-                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger)"
+                id="sidebar"
+                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500"
             >
-                <h2>Staff Members</h2>
+                <div class="aside__top flex relative min-w-[15px]">
+                    <h2>Staff Members</h2>
+                    <button
+                        id="sidebar__btn"
+                        class="text-(--primary-clr) font-(--fw-h) cursor-pointer h-[3.6rem] absolute right-0"
+                        style="font-size: var(--fs-h2)"
+                    >
+                        <!-- <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="11"
+                            height="20"
+                            id="arrow"
+                            fill="var(--primary-clr)"
+                            class="origin-center rotate-180 transition-transform duration-500"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M.366 19.708c.405.39 1.06.39 1.464 0l8.563-8.264a1.95 1.95 0 0 0 0-2.827L1.768.292A1.063 1.063 0 0 0 .314.282a.976.976 0 0 0-.011 1.425l7.894 7.617a.975.975 0 0 1 0 1.414L.366 18.295a.974.974 0 0 0 0 1.413"
+                            ></path>
+                        </svg> -->
+                        <svg
+                            class="w-6 h-6 text-(--primary-clr)"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 8 14"
+                            id="aside__arrow"
+                        >
+                            <path
+                                class="rotate-180 shrink-0 origin-center transition-transform duration-500"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"
+                            />
+                        </svg>
+                        <!-- <div id="arrow" class="origin-center rotate-180">></div> -->
+                    </button>
+                </div>
                 <div id="aside-workers"></div>
                 <button
                     id="add-worker"

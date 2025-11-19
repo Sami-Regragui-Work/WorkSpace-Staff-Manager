@@ -216,3 +216,19 @@ label {
 .img--sidebar {
     @apply h-full border-(--primary-clr);
 }
+
+.danger {
+    @apply text-red-500 mt-1;
+}
+
+/* .warning {
+    @apply text-yellow-500 mt-1;
+} */
+
+.input--danger {
+    @apply border-red-500 bg-red-200;
+}
+
+.input--valid {
+    @apply border-green-500 bg-green-200;
+}

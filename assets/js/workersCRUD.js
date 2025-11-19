@@ -1,3 +1,5 @@
+import { validateForm, toggleError } from "./validation.js";
+
 const addWorkerBtn = document.getElementById("add-worker");
 const addExperienceBtn = document.getElementById("add-experience");
 const saveWorkerBtn = document.getElementById("save-worker");
@@ -6,8 +8,9 @@ const modal = document.getElementById("crud-modal");
 const modalForum = document.getElementById("add-worker-modal");
 const experiences = document.getElementById("experiences");
 const picUrl = document.getElementById("pic");
-const closeModal = document.querySelectorAll(".close__modal");
+const closeModalBtns = document.querySelectorAll(".close__modal");
 
+const fallBackImg = "assets/images/imgPlaceHolder.svg";
 // to reset experiences to initial state (one experiences)
 const experiencesInitialState = experiences.innerHTML;
 
@@ -46,9 +49,13 @@ function addWorker(e, edit = false) {
     expCounter = 1;
     if (!edit) {
         experiences.innerHTML = experiencesInitialState;
-        // console/.log("reseted");
         modalForum.reset();
         modalForum.querySelector("input[type='hidden']").value = "";
+        const inputs = Array.from(
+            modalForum.querySelectorAll("input, #role")
+        ).slice(1);
+        inputs.forEach((input) => toggleError(input, false));
+
         setPreview();
         modal.classList.toggle("hidden");
         modal.classList.toggle("flex");
@@ -56,21 +63,31 @@ function addWorker(e, edit = false) {
     } else {
         const clickTarget = e.target;
         if (clickTarget.tagName == "BUTTON") {
-            id = clickTarget.parentElement.getAttribute("worker-id");
+            const id = clickTarget.parentElement.getAttribute("worker-id");
             const infos = workers.filter((infos) => infos.id == id)[0];
             // expCounter = infos.experiences.length;
             setWorkerInfos(infos);
+            const inputs = Array.from(
+                modalForum.querySelectorAll("input, #role")
+            ).slice(1);
+            inputs.forEach((input) => toggleError(input, false));
             modal.classList.toggle("hidden");
             modal.classList.toggle("flex");
             modal.ariaHidden = false;
-            // console/.log("edit mode");
         }
     }
 }
 
+function closeModal(e = null, btn = null) {
+    modal.classList.toggle("hidden");
+    modal.classList.toggle("flex");
+    modal.ariaHidden = true;
+    if (e) e.target.blur();
+    if (btn) btn.blur();
+}
+
 function showAddedWorker(workerInfos, edit = false) {
     if (!edit) {
-        console.log("add mode");
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
         const divTemplate = `
@@ -87,7 +104,6 @@ function showAddedWorker(workerInfos, edit = false) {
     `;
         workersDiv.innerHTML += divTemplate;
     } else {
-        console.log("edit mode");
         const div = document.querySelector(`[worker-id='${workerInfos.id}']`);
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
@@ -120,26 +136,17 @@ function storeWorkerInfos(values) {
     //         to: ""
     //     }]
     // };
-    console.log("id input:", values[0]);
-    edit = Boolean(values[0]);
+    let edit = Boolean(values[0]);
     const infos = { id: edit ? values[0] : ++GlobalId };
 
     values.slice(1).forEach((value, ind) => {
         if (ind < 5) {
             infos[fieldsLabs[ind]] = value;
-
-            // console/.log(infos);
         } else {
             const expInd = Math.floor((ind - 5) / 4);
             const expFieldInd = (ind - 5) % 4;
-            // console/.log(expFieldInd);
             if (!expFieldInd) {
-                // console/.log("expInd " + expInd);
-                // console/.log("expFieldInd " + expFieldInd);
-                // console/.log(infos);
                 if (!expInd) {
-                    // console/.log(infos);
-                    // console/.log(infos.experiences);
                     infos.experiences = [{}];
                 } else infos.experiences.push({});
             }
@@ -148,12 +155,10 @@ function storeWorkerInfos(values) {
     });
 
     // fetch("assets/workers.json").then((res) => )
-    // console/.log(infos);
 
     if (edit) {
         workers.splice(getWorkersIndex(infos.id), 1, infos);
     } else workers.push(infos);
-    // console/.log(infos);
     showAddedWorker(infos, edit);
 }
 
@@ -166,11 +171,8 @@ function setWorkerInfos(infos) {
     let prevExpInd = 0;
 
     Object.values(infos).forEach((value, ind) => {
-        // console/.log(value);
         if (ind < 6) {
             inputs[ind].value = value;
-
-            // console/.log(infos);
         } else {
             const exps = value; // array
             exps.forEach((row, expInd) => {
@@ -184,16 +186,13 @@ function setWorkerInfos(infos) {
                             )
                         )
                     );
-                    // console/.log(
                     //     experiences.querySelectorAll(
                     //         `#experience_${expInd + 1} input`
                     //     )
                     // );
                 }
                 Object.values(row).forEach((expValue, expFieldInd) => {
-                    // console/.log(expInputs);
                     expInputs[expInd * 4 + expFieldInd].value = expValue;
-                    // console/.log(expInputs[expInd * 4 + expFieldInd].value);
                 });
             });
         }
@@ -202,28 +201,45 @@ function setWorkerInfos(infos) {
 
 function getWorkerInfos(e) {
     e.preventDefault();
-    // console/.log(modalForum);
-    const inputs = modalForum.querySelectorAll("input");
+    const inputs = Array.from(modalForum.querySelectorAll("input"));
     const dropDown = modalForum.querySelector("#role");
+    inputs.splice(2, 0, dropDown);
 
-    let values = Array.from(inputs).map((input) => input.value);
-    const roleVal = dropDown.value;
-    values.splice(2, 0, roleVal);
-    // console/.log(values);
-    storeWorkerInfos(values);
+    let values = inputs.map((input) => input.value);
+
+    if (validateForm(inputs.slice(1))) {
+        storeWorkerInfos(values);
+        closeModal(null, saveWorkerBtn);
+    }
 }
 
 function setPreview() {
-    picUrl.parentElement.nextElementSibling.firstElementChild.src =
-        picUrl.value;
+    const img = picUrl.parentElement.nextElementSibling.firstElementChild;
+    const url = picUrl.value || fallBackImg;
+
+    img.onerror = null;
+
+    img.onerror = () => {
+        img.src = fallBackImg;
+    };
+
+    img.src = url;
 }
 
 function addExperience() {
-    // console/.log("cc");
     // e.preventDefault();
     const newExp = experiences.firstElementChild.cloneNode(true);
     newExp.querySelectorAll("input").forEach((input) => (input.value = ""));
     newExp.setAttribute("id", `experience_${++expCounter}`);
+    const labs = newExp.querySelectorAll("label");
+    const ins = newExp.querySelectorAll("input");
+    for (let ind in Array.from(labs)) {
+        const nInd = Number(ind);
+        labs[ind].htmlFor = `${labs[ind].htmlFor.slice(0, -2)}_${nInd + 2}`;
+        ins[ind].id = `${ins[ind].id.slice(0, -2)}_${nInd + 2}`;
+        ins[ind].name = `${ins[ind].name.slice(0, -2)}_${nInd + 2}`;
+        toggleError(ins[ind], false);
+    }
     // const addBeforeThis = addExperienceBtn.parentNode;
 
     experiences.appendChild(newExp);
@@ -237,14 +253,11 @@ function initialize() {
     workersDiv.addEventListener("click", (e) => {
         addWorker(e, true);
     });
-    closeModal.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-            modal.classList.toggle("hidden");
-            modal.classList.toggle("flex");
-            modal.ariaHidden = true;
-            e.target.blur();
-        });
+    closeModalBtns.forEach((btn) => {
+        btn.addEventListener("click", closeModal);
     });
 }
 
-initialize();
+// initialize();
+
+export { initialize, fallBackImg };

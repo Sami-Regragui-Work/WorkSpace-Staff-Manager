@@ -41,6 +41,18 @@ const expLabs = ["company", "role", "from", "to"];
 //     }
 // }
 
+function getExpInputs() {
+    const expInputs = Array.from(experiences.querySelectorAll("input"));
+    return expInputs;
+}
+
+function getModalInputs() {
+    const inputs = Array.from(modalForum.querySelectorAll("input"));
+    const dropDown = modalForum.querySelector("#role");
+    inputs.splice(2, 0, dropDown);
+    return inputs;
+}
+
 function getWorkersIndex(id) {
     return workers.findIndex((worker) => worker.id == id);
 }
@@ -51,9 +63,7 @@ function addWorker(e, edit = false) {
         experiences.innerHTML = experiencesInitialState;
         modalForum.reset();
         modalForum.querySelector("input[type='hidden']").value = "";
-        const inputs = Array.from(
-            modalForum.querySelectorAll("input, #role")
-        ).slice(1);
+        const inputs = getModalInputs().slice(1);
         inputs.forEach((input) => toggleError(input, false));
 
         setPreview();
@@ -67,9 +77,7 @@ function addWorker(e, edit = false) {
             const infos = workers.filter((infos) => infos.id == id)[0];
             // expCounter = infos.experiences.length;
             setWorkerInfos(infos);
-            const inputs = Array.from(
-                modalForum.querySelectorAll("input, #role")
-            ).slice(1);
+            const inputs = getModalInputs().slice(1);
             inputs.forEach((input) => toggleError(input, false));
             modal.classList.toggle("hidden");
             modal.classList.toggle("flex");
@@ -93,7 +101,7 @@ function showAddedWorker(workerInfos, edit = false) {
         const divTemplate = `
         <div worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) '>
             <div class='aside__worker__left flex gap-3 items-center '>
-                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl}>
+                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
                     <h3>${workerInfos.name}</h3>
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
@@ -109,7 +117,7 @@ function showAddedWorker(workerInfos, edit = false) {
             modalForum.querySelector("#role").options[workerInfos.role].text;
         div.innerHTML = `
         <div class='aside__worker__left flex gap-3 items-center '>
-                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl}>
+                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
                     <h3>${workerInfos.name}</h3>
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
@@ -164,10 +172,10 @@ function storeWorkerInfos(values) {
 
 function setWorkerInfos(infos) {
     experiences.innerHTML = experiencesInitialState;
-    const inputs = Array.from(modalForum.querySelectorAll("div>div>input"));
-    const dropDown = modalForum.querySelector("#role");
-    const expInputs = Array.from(experiences.querySelectorAll("input"));
-    inputs.splice(2, 0, dropDown);
+    const inputs = getModalInputs().slice(0, 6);
+    console.log(inputs);
+    const expInputs = getExpInputs();
+
     let prevExpInd = 0;
 
     Object.values(infos).forEach((value, ind) => {
@@ -201,9 +209,7 @@ function setWorkerInfos(infos) {
 
 function getWorkerInfos(e) {
     e.preventDefault();
-    const inputs = Array.from(modalForum.querySelectorAll("input"));
-    const dropDown = modalForum.querySelector("#role");
-    inputs.splice(2, 0, dropDown);
+    const inputs = getModalInputs();
 
     let values = inputs.map((input) => input.value);
 

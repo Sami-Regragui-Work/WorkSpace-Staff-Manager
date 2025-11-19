@@ -7,10 +7,10 @@
         <script src="assets/js/workersCRUD.js" defer></script>
         <script src="assets/js/sideBarCollapse.js" defer></script>
         <!-- flow-bite script -->
-        <script
+        <!-- <script
             src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"
             defer
-        ></script>
+        ></script> -->
         <title>WorkSpace Staff Manager</title>
     </head>
     <body>
@@ -31,11 +31,10 @@
                         <div
                             class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200"
                         >
-                            <h2 class="">Add Worker</h2>
+                            <h2>Add Worker</h2>
                             <button
                                 type="button"
-                                class="text-(--accent-clr) bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                                data-modal-toggle="crud-modal"
+                                class="close__modal text-(--accent-clr) bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                             >
                                 <svg
                                     class="w-3 h-3"
@@ -58,6 +57,16 @@
                         <!-- Modal body -->
                         <form id="add-worker-modal" class="p-4 md:p-5">
                             <div class="grid gap-4 mb-4 grid-cols-2">
+                                <div class="col-span-1 hidden">
+                                    <!-- try to add later @min-[50rem]:col-span-2 -->
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        id="id"
+                                        value=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                    />
+                                </div>
                                 <div class="col-span-1">
                                     <!-- try to add later @min-[50rem]:col-span-2 -->
                                     <label for="name" class="">Name:</label>
@@ -133,89 +142,90 @@
                                         class="img img--modal"
                                     />
                                 </div>
-                                <div class="col-span-2">
+                                <div class="col-span-2 flex flex-col gap-2">
                                     <label for="experiences" class=""
                                         >Experiences:</label
                                     >
                                     <div
                                         id="experiences"
-                                        class="duplicable-area flex flex-col bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-exp) gap-4 rounded-(--b-r)"
+                                        class="flex flex-col gap-2"
                                     >
-                                        <div class="col-span-2 -mt-1">
-                                            <label for="exp__company" class=""
-                                                >Company:</label
-                                            >
-                                            <input
-                                                type="text"
-                                                name="exp__company"
-                                                id="exp__company"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                placeholder="Company Name"
-                                            />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label for="exp__role" class=""
-                                                >Role:</label
-                                            >
-                                            <input
-                                                type="text"
-                                                name="exp__role"
-                                                id="exp__role"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                placeholder="e.g: Manager, Devlopper..."
-                                            />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label for="exp__from" class=""
-                                                >From:</label
-                                            >
-                                            <input
-                                                type="date"
-                                                name="exp__from"
-                                                id="exp__from"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                            />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label for="exp__to" class=""
-                                                >To:</label
-                                            >
-                                            <input
-                                                type="date"
-                                                name="exp__to"
-                                                id="exp__to"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                            />
+                                        <div
+                                            id="experience_1"
+                                            class="duplicable-area flex flex-col bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-exp) gap-4 rounded-(--b-r)"
+                                        >
+                                            <div class="col-span-2 -mt-1">
+                                                <label
+                                                    for="exp__company"
+                                                    class=""
+                                                    >Company:</label
+                                                >
+                                                <input
+                                                    type="text"
+                                                    name="exp__company"
+                                                    id="exp__company"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                    placeholder="Company Name"
+                                                />
+                                            </div>
+                                            <div class="col-span-2">
+                                                <label for="exp__role" class=""
+                                                    >Role:</label
+                                                >
+                                                <input
+                                                    type="text"
+                                                    name="exp__role"
+                                                    id="exp__role"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                    placeholder="e.g: Manager, Devlopper..."
+                                                />
+                                            </div>
+                                            <div class="col-span-2">
+                                                <label for="exp__from" class=""
+                                                    >From:</label
+                                                >
+                                                <input
+                                                    type="date"
+                                                    name="exp__from"
+                                                    id="exp__from"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                />
+                                            </div>
+                                            <div class="col-span-2">
+                                                <label for="exp__to" class=""
+                                                    >To:</label
+                                                >
+                                                <input
+                                                    type="date"
+                                                    name="exp__to"
+                                                    id="exp__to"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="exp__btns">
                                         <button
+                                            type="button"
                                             id="add-experience"
                                             class="btn btn--modal btn--exp mt-4 ml-2"
                                         >
                                             Add Another Experience
                                         </button>
                                     </div>
-                                    <!-- <textarea
-                                        id="description"
-                                        rows="4"
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Write product description here"
-                                    ></textarea> -->
                                 </div>
                             </div>
                             <div class="btns flex justify-end gap-1">
                                 <button
                                     id="save-worker"
                                     type="submit"
-                                    class="btn btn--primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-center relative top-1 btn--modal inline-flex items-center justify-center"
+                                    class="close__modal btn btn--primary font-medium text-center relative top-1 btn--modal inline-flex items-center justify-center"
                                 >
                                     Save Worker
                                 </button>
                                 <button
                                     type="button"
-                                    class="btn btn--secondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-center relative top-1 btn--modal inline-flex items-center justify-center"
-                                    data-modal-toggle="crud-modal"
+                                    class="close__modal btn btn--secondary font-medium text-center relative top-1 btn--modal inline-flex items-center justify-center"
                                 >
                                     Cancel
                                 </button>
@@ -227,7 +237,7 @@
 
             <aside
                 id="sidebar"
-                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500"
+                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5"
             >
                 <div class="aside__top flex relative min-w-[15px]">
                     <h2>Staff Members</h2>
@@ -236,19 +246,6 @@
                         class="text-(--primary-clr) font-(--fw-h) cursor-pointer h-[3.6rem] absolute right-0"
                         style="font-size: var(--fs-h2)"
                     >
-                        <!-- <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="11"
-                            height="20"
-                            id="arrow"
-                            fill="var(--primary-clr)"
-                            class="origin-center rotate-180 transition-transform duration-500"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M.366 19.708c.405.39 1.06.39 1.464 0l8.563-8.264a1.95 1.95 0 0 0 0-2.827L1.768.292A1.063 1.063 0 0 0 .314.282a.976.976 0 0 0-.011 1.425l7.894 7.617a.975.975 0 0 1 0 1.414L.366 18.295a.974.974 0 0 0 0 1.413"
-                            ></path>
-                        </svg> -->
                         <svg
                             class="w-6 h-6 text-(--primary-clr)"
                             aria-hidden="true"
@@ -269,18 +266,16 @@
                         <!-- <div id="arrow" class="origin-center rotate-180">></div> -->
                     </button>
                 </div>
-                <div id="aside-workers"></div>
-                <button
-                    id="add-worker"
-                    class="btn btn--primary mt-auto"
-                    data-modal-target="crud-modal"
-                    data-modal-toggle="crud-modal"
-                >
+                <div
+                    id="aside-workers"
+                    class="flex flex-col gap-3 overflow-y-auto overflow-x-clip"
+                ></div>
+                <button id="add-worker" class="btn btn--primary mt-auto">
                     Add New Worker
                 </button>
             </aside>
             <div
-                class="center flex-2 m-(--padding-g) flex justify-center items-center"
+                class="center flex-3 m-(--padding-g) flex justify-center items-center"
             >
                 <div class="wrapper w-full aspect-430/243 mx-[1%] mt-[0.5%]">
                     <!-- for responsivity, turn w-full to h-full when screen max-height reaches the wrapper height -->

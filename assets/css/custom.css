@@ -16,8 +16,9 @@
     --bg-secondary-clr: oklch(98.032% 0.01383 219.982); /* #f0f8ff */
 
     --fs-h2: 2.4rem;
+    --fs-btn-lg: 1.8rem;
     --fs-h3: 1.8rem;
-    --fs-btn: 1.6rem;
+    --fs-btn-sm: 1.4rem;
     --fs-text: 1.4rem;
 
     --fw-h: 700;
@@ -34,6 +35,7 @@
 
 html {
     font-size: 10px;
+    /* @apply transition-all; */
 }
 
 h2 {
@@ -41,9 +43,14 @@ h2 {
     font-size: var(--fs-h2);
 }
 
+h3 {
+    @apply font-(--fw-h);
+    font-size: var(--fs-h3);
+}
+
 .btn {
     @apply rounded-(--b-r) cursor-pointer hover:bg-none hover:bg-transparent font-(--fw-btn) aspect-auto;
-    font-size: var(--fs-btn);
+    font-size: var(--fs-btn-lg);
 }
 
 .btn--primary {
@@ -194,10 +201,6 @@ h2 {
 
 /* customize flowbite modal */
 
-/* #crud-modal > * {
-    color-scheme: light !important;
-} */
-
 label {
     @apply font-(--fw-label) text-(--accent-clr) block mb-2;
 }
@@ -208,4 +211,8 @@ label {
 
 .img--modal {
     @apply h-[8rem] border-(--accent-clr);
+}
+
+.img--sidebar {
+    @apply h-full border-(--primary-clr);
 }

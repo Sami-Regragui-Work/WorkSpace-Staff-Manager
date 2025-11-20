@@ -229,6 +229,10 @@ label {
     @apply border-red-500 bg-red-200;
 }
 
+.room--danger {
+    @apply bg-[#ff898979];
+}
+
 .input--valid {
     @apply border-green-500 bg-green-200;
 }

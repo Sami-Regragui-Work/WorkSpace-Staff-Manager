@@ -11,13 +11,14 @@
             defer
         ></script> -->
         <!-- <script src="assets/js/validation.js" defer></script> -->
+        <!-- <script src="assets/js/rooms.js" defer></script> -->
         <title>WorkSpace Staff Manager</title>
     </head>
     <body>
         <main
             class="container flex bg-(--bg-secondary-clr) h-dvh min-w-dvw p-(--padding-g) min-h-[300px]"
         >
-            <!-- Main modal -->
+            <!-- Before Forum Modal -->
             <div
                 id="crud-modal"
                 tabindex="-1"
@@ -270,7 +271,72 @@
                     </div>
                 </div>
             </div>
+            <!-- After Forum Modal -->
 
+            <!-- Before Assign Modal -->
+            <div
+                id="worker-assign-modal"
+                tabindex="-1"
+                aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full bg-[rgba(0,0,0,0.6)]"
+            >
+                <div class="relative p-4 w-[60%] max-h-full">
+                    <div class="relative bg-white rounded-lg shadow-sm">
+                        <!-- Modal header -->
+                        <div
+                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200"
+                        >
+                            <h2
+                                id="assign-modal-title"
+                                class="font-bold text-lg text-blue-600"
+                            >
+                                Select Worker to Assign
+                            </h2>
+                            <button
+                                type="button"
+                                id="close-assign-modal"
+                                class="text-(--accent-clr) bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            >
+                                <svg
+                                    class="w-3 h-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                    />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal__body p-4 md:p-5">
+                            <div
+                                id="worker-list"
+                                class="flex flex-col gap-3 max-h-72 overflow-y-auto"
+                            >
+                                <!-- Worker items will be injected here by JS -->
+                                <!-- Example:
+                    <div class="worker-item flex items-center gap-3 bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) cursor-pointer hover:shadow hover:ring-2 hover:ring-blue-200 transition">
+                        <img src="PHOTO_URL" alt="WORKER NAME" class="w-10 h-10 rounded-full border border-gray-300 object-cover" />
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-gray-900">Brent Sweeney</span>
+                            <span class="text-sm text-gray-500">it</span>
+                        </div>
+                    </div>
+                    -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- After Asign Modal -->
             <aside
                 id="sidebar"
                 class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5"
@@ -315,39 +381,51 @@
             >
                 <div class="wrapper w-full aspect-430/243 mx-[1%] mt-[0.5%]">
                     <!-- for responsivity, turn w-full to h-full when screen max-height reaches the wrapper height -->
-                    <div class="rooms grid h-full bg/-[#0011ff96]">
+                    <div id="rooms" class="rooms grid h-full bg/-[#0011ff96]">
                         <div id="room-1" class="room">
                             <span>Conference Room</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
                         <div id="passage-1" class="passage"></div>
-                        <div id="room-2" class="room">
+                        <div id="room-2" class="room room--danger">
                             <span>Servers Room</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
-                        <div id="room-3" class="room">
+                        <div id="room-3" class="room room--danger">
                             <span>Security Room</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
                         <div id="room-4" class="room">
                             <span>Reception</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
                         <div id="passage-2" class="passage"></div>
                         <div id="passage-3" class="passage"></div>
-                        <div id="room-5" class="room">
+                        <div id="room-5" class="room room--danger">
                             <span>Staff Room</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
-                        <div id="room-6" class="room">
+                        <div id="room-6" class="room room--danger">
                             <span>Archive Room</span>
                             <div class="asigned-workers"></div>
-                            <button class="btn btn--small">+</button>
+                            <button data-type="add" class="btn btn--small">
+                                +
+                            </button>
                         </div>
                     </div>
                 </div>

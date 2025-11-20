@@ -1,4 +1,6 @@
 import { validateForm, toggleError } from "./validation.js";
+import { getWorkersLS, addWorkerLS, updateWorkerLS } from "./store.js";
+import { fillAssignModal } from "./rooms.js";
 
 const addWorkerBtn = document.getElementById("add-worker");
 const addExperienceBtn = document.getElementById("add-experience");
@@ -14,7 +16,7 @@ const fallBackImg = "assets/images/imgPlaceHolder.svg";
 // to reset experiences to initial state (one experiences)
 const experiencesInitialState = experiences.innerHTML;
 
-const workers = [];
+const workers = getWorkersLS();
 
 let expCounter;
 let GlobalId = 0;
@@ -95,11 +97,12 @@ function closeModal(e = null, btn = null) {
 }
 
 function showAddedWorker(workerInfos, edit = false) {
+    fillAssignModal();
     if (!edit) {
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
         const divTemplate = `
-        <div worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) '>
+        <div worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
             <div class='aside__worker__left flex gap-3 items-center '>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
@@ -166,7 +169,11 @@ function storeWorkerInfos(values) {
 
     if (edit) {
         workers.splice(getWorkersIndex(infos.id), 1, infos);
-    } else workers.push(infos);
+        updateWorkerLS(infos);
+    } else {
+        workers.push(infos);
+        addWorkerLS(infos);
+    }
     showAddedWorker(infos, edit);
 }
 
@@ -205,6 +212,7 @@ function setWorkerInfos(infos) {
             });
         }
     });
+    setPreview();
 }
 
 function getWorkerInfos(e) {
@@ -215,6 +223,7 @@ function getWorkerInfos(e) {
 
     if (validateForm(inputs.slice(1))) {
         storeWorkerInfos(values);
+
         closeModal(null, saveWorkerBtn);
     }
 }
@@ -262,8 +271,11 @@ function initialize() {
     closeModalBtns.forEach((btn) => {
         btn.addEventListener("click", closeModal);
     });
+    workers.forEach((worker) => {
+        showAddedWorker(worker);
+    });
 }
 
 // initialize();
 
-export { initialize, fallBackImg };
+export { initialize, fallBackImg, workers, modalForum };

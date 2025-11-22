@@ -1,5 +1,5 @@
 import { validateForm, toggleError } from "./validation.js";
-import { getWorkersLS, addWorkerLS, updateWorkerLS } from "./store.js";
+import { getWorkersLS, addWorkerLS /*, updateWorkerLS*/ } from "./store.js";
 import { fillAssignModal } from "./rooms.js";
 
 const addWorkerBtn = document.getElementById("add-worker");
@@ -17,6 +17,7 @@ const fallBackImg = "assets/images/imgPlaceHolder.svg";
 const experiencesInitialState = experiences.innerHTML;
 
 const workers = getWorkersLS();
+// console./log(getWorkersLS());
 
 let expCounter;
 let GlobalId = workers.length
@@ -57,8 +58,15 @@ function getModalInputs() {
     return inputs;
 }
 
-function getWorkersIndex(id) {
-    return workers.findIndex((worker) => worker.id == id);
+// function getWorkersIndex(id) {
+//     return workers.findIndex((worker) => worker.id == id);
+// }
+
+function updateWorkersArr(updatedWorker) {
+    workers.forEach((worker, ind) => {
+        if (worker.id == updatedWorker.id) workers[ind] = updatedWorker;
+    });
+    // console/.log(workers);
 }
 
 function addWorker(e, edit = false) {
@@ -78,7 +86,7 @@ function addWorker(e, edit = false) {
         const clickTarget = e.target;
         if (clickTarget.tagName == "BUTTON") {
             const id = clickTarget.parentElement.getAttribute("worker-id");
-            const infos = workers.filter((infos) => infos.id == id)[0];
+            const infos = workers.find((infos) => infos.id == id);
             // expCounter = infos.experiences.length;
             setWorkerInfos(infos);
             const inputs = getModalInputs().slice(1);
@@ -169,11 +177,12 @@ function storeWorkerInfos(values) {
     // fetch("assets/workers.json").then((res) => )
 
     if (edit) {
-        workers.splice(getWorkersIndex(infos.id), 1, infos);
-        updateWorkerLS(infos);
+        // workers.splice(getWorkersIndex(infos.id), 1, infos);
+        updateWorkersArr(infos);
+        addWorkerLS(workers);
     } else {
         workers.push(infos);
-        addWorkerLS(infos);
+        addWorkerLS(workers);
     }
     showAddedWorker(infos, edit);
 }
@@ -285,4 +294,5 @@ export {
     modalForum,
     workersDiv,
     showAddedWorker,
+    updateWorkersArr,
 };

@@ -4,8 +4,9 @@ import {
     modalForum,
     workersDiv,
     showAddedWorker,
+    updateWorkersArr,
 } from "./workersCRUD.js";
-import { getWorkersLS } from "./store.js";
+import { addWorkerLS, getWorkersLS /*, updateWorkerLS*/ } from "./store.js";
 
 const rooms = document.getElementById("rooms");
 const roomsModal = document.getElementById("worker-assign-modal");
@@ -63,24 +64,30 @@ let roomTarget;
 let targetId;
 let selectedWorkerIds = [];
 
+let unassignAll = true;
+unassignAll = false;
+
 function getUnassignedWorkers() {
     const allWorkers = getWorkersLS();
+    // console/.log(getWorkersLS());
     const assignedIds = roomsInfos.flatMap((room) => room.workersIds);
-    console.log(assignedIds);
+    // console/.log(assignedIds);
     return allWorkers.filter((worker) => !assignedIds.includes(worker.id));
 }
 
 function updateSidebarWorkers() {
     workersDiv.innerHTML = "";
     const unassignedWorkers = getUnassignedWorkers();
-    console.log(unassignedWorkers);
+    // console/.log(unassignedWorkers);
     unassignedWorkers.forEach((worker) => {
         showAddedWorker(worker);
     });
 }
 
-function showWorkerInRoom() {
-    const roomDiv = roomTarget;
+function showWorkerInRoom(roomObj = null) {
+    console.trace("roomObj.id:", roomObj.id);
+    const roomDiv = roomTarget || rooms.querySelector(`#room-${roomObj.id}`);
+    // console/.log(roomDiv);
     const assignedDiv = roomDiv.querySelector(".assigned-workers");
 
     roomDiv.classList.remove("room--danger");
@@ -97,6 +104,7 @@ function showWorkerInRoom() {
             </article>
         `;
     });
+    selectedWorkerIds = [];
 }
 
 function assignWorker(e) {
@@ -111,17 +119,22 @@ function assignWorker(e) {
     let addedCount = 0;
 
     selectedWorkerIds.forEach((workerId) => {
-        if (availableSlots > 0 && !room.workersIds.includes(workerId)) {
+        if (availableSlots > 0) {
             room.workersIds.push(workerId);
             availableSlots--;
             addedCount++;
+            let workersLS = getWorkersLS();
+            // console./log(workersLS);
+            const worker = workersLS.find((w) => w.id == workerId);
+            worker.where = room.id;
+            updateWorkersArr(worker);
+
+            addWorkerLS(workers);
         }
     });
 
     if (addedCount < selectedWorkerIds.length) {
-        alert(
-            "Some workers couldn't be added: room is full or already assigned."
-        );
+        alert("Some workers couldn't be added: room is full");
     }
     e.target.blur();
     roomsModal.classList.remove("flex");
@@ -129,10 +142,8 @@ function assignWorker(e) {
     roomsModal.ariaHidden = true;
 
     // assign here
-    showWorkerInRoom();
+    showWorkerInRoom(room);
     updateSidebarWorkers();
-
-    selectedWorkerIds = [];
 
     // console/.log(roomsInfos);
 }
@@ -161,16 +172,18 @@ function selectWorker(e) {
 }
 
 function fillAssignModal() {
-    workersList.innerHTML = "";
-    workers.forEach((worker) => {
-        targetId = roomTarget.id.slice(-1);
-        const canAccess = roomsInfos.filter((room) => room.id == targetId)[0]
-            .allowedRoles;
+    if (roomTarget) {
+        workersList.innerHTML = "";
+        getUnassignedWorkers().forEach((worker) => {
+            targetId = roomTarget.id.slice(-1);
+            const canAccess = roomsInfos.find(
+                (room) => room.id == targetId
+            ).allowedRoles;
 
-        if (canAccess.includes(worker.role)) {
-            const roleText =
-                modalForum.querySelector("#role").options[worker.role].text;
-            workersList.innerHTML += `
+            if (canAccess.includes(worker.role)) {
+                const roleText =
+                    modalForum.querySelector("#role").options[worker.role].text;
+                workersList.innerHTML += `
         <article worker-id=${worker.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
             <div class='aside__worker__left flex gap-3 items-center '>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${worker.photoUrl} onerror="this.src='${fallBackImg}';">
@@ -182,8 +195,9 @@ function fillAssignModal() {
             <button class='btn text-(--secondary-clr) ml-auto' style='font-size: var(--fs-text)' >Edit</button>
         </article>
         `;
-        }
-    });
+            }
+        });
+    }
 }
 
 function closeRoomsModal() {
@@ -194,7 +208,7 @@ function closeRoomsModal() {
 }
 
 function pickWorkers(e) {
-    // console.log(target.getAttribute("data-type"));
+    // console/.log(target.getAttribute("data-type"));
     if (e.target.getAttribute("data-type") == "add") {
         roomTarget = e.target.parentElement;
         roomsModal.classList.remove("hidden");
@@ -204,13 +218,38 @@ function pickWorkers(e) {
     fillAssignModal();
 }
 
+function assignWorkerFromLs() {
+    const workersLS = getWorkersLS();
+    workersLS.forEach((worker) => {
+        if (worker.where) {
+            const room = roomsInfos.find((r) => r.id == worker.where);
+            if (room) room.workersIds.push(worker.id);
+            // console/.log(room);
+        }
+    });
+    roomsInfos.forEach((room) => {
+        if (room.workersIds.length) {
+            selectedWorkerIds = room.workersIds;
+            showWorkerInRoom(room);
+        }
+    });
+    updateSidebarWorkers();
+}
+
 function startRooms() {
     rooms.addEventListener("click", pickWorkers);
     closeBtn.addEventListener("click", closeRoomsModal);
     workersList.addEventListener("click", selectWorker);
     assignBtn.addEventListener("click", assignWorker);
-}
 
-startRooms();
+    if (unassignAll) {
+        workers.forEach((worker) => {
+            if (worker.where) delete worker.where;
+        });
+        updateWorkersArr(workers);
+        addWorkerLS(workers);
+    }
+    assignWorkerFromLs();
+}
 
 export { startRooms, fillAssignModal };

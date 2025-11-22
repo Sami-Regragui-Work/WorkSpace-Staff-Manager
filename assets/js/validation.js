@@ -1,5 +1,7 @@
 import { fallBackImg } from "./workersCRUD.js";
 
+let ignoreValidation = true;
+
 const validationRules = [
     {
         id: "name",
@@ -69,9 +71,9 @@ function validateField(field, rule) {
 
     if (field.type == "url") {
         const img = field.parentElement.nextElementSibling.firstElementChild;
-        console.log(img.src);
+        // console/.log(img.src);
         if (img.src.split("/").at(-1) == fallBackImg.split("/").at(-1)) {
-            console.log("not valid");
+            // console/.log("not valid");
             message = isValid ? "This is not an image URL" : rule.message;
             isValid = false;
         }
@@ -94,6 +96,7 @@ function validateField(field, rule) {
 }
 
 function validateForm(fields) {
+    if (ignoreValidation) return true;
     let isValid = true;
     // const fields = Array.from(document.querySelectorAll("input")).slice(1);
     // const roleField = document.querySelector("#role");

@@ -19,7 +19,9 @@ const experiencesInitialState = experiences.innerHTML;
 const workers = getWorkersLS();
 
 let expCounter;
-let GlobalId = 0;
+let GlobalId = workers.length
+    ? Math.max(...workers.map((worker) => worker.id))
+    : 0;
 
 const fieldsLabs = [
     "name",
@@ -88,21 +90,20 @@ function addWorker(e, edit = false) {
     }
 }
 
-function closeModal(e = null, btn = null) {
+function closeModal() {
     modal.classList.toggle("hidden");
     modal.classList.toggle("flex");
     modal.ariaHidden = true;
-    if (e) e.target.blur();
-    if (btn) btn.blur();
+    getModalInputs().forEach((input) => input.blur());
+    modal.querySelectorAll("button").forEach((btn) => btn.blur());
 }
 
 function showAddedWorker(workerInfos, edit = false) {
-    fillAssignModal();
     if (!edit) {
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
         const divTemplate = `
-        <div worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
+        <article worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
             <div class='aside__worker__left flex gap-3 items-center '>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
@@ -111,7 +112,7 @@ function showAddedWorker(workerInfos, edit = false) {
                 </div>
             </div>
             <button class='btn text-(--secondary-clr) ml-auto' style='font-size: var(--fs-text)' >Edit</button>
-        </div>
+        </article>
     `;
         workersDiv.innerHTML += divTemplate;
     } else {
@@ -180,7 +181,6 @@ function storeWorkerInfos(values) {
 function setWorkerInfos(infos) {
     experiences.innerHTML = experiencesInitialState;
     const inputs = getModalInputs().slice(0, 6);
-    console.log(inputs);
     const expInputs = getExpInputs();
 
     let prevExpInd = 0;
@@ -224,7 +224,7 @@ function getWorkerInfos(e) {
     if (validateForm(inputs.slice(1))) {
         storeWorkerInfos(values);
 
-        closeModal(null, saveWorkerBtn);
+        closeModal();
     }
 }
 
@@ -278,4 +278,11 @@ function initialize() {
 
 // initialize();
 
-export { initialize, fallBackImg, workers, modalForum };
+export {
+    initialize,
+    fallBackImg,
+    workers,
+    modalForum,
+    workersDiv,
+    showAddedWorker,
+};

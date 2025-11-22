@@ -63,6 +63,7 @@ function toggleError(field, show, message = "") {
 
 function validateField(field, rule) {
     let value = field.value;
+    let message = rule.message;
 
     let isValid = rule.regex.test(value);
 
@@ -71,11 +72,24 @@ function validateField(field, rule) {
         console.log(img.src);
         if (img.src.split("/").at(-1) == fallBackImg.split("/").at(-1)) {
             console.log("not valid");
+            message = isValid ? "This is not an image URL" : rule.message;
             isValid = false;
+        }
+    } else if (rule.id == "exp__to") {
+        // field.value < field.parentElement.previousElementSibling.children[1];
+        const expTo = Number(field.value.split("-").join(""));
+        const expFrom = Number(
+            field.parentElement.previousElementSibling.children[1].value
+                .split("-")
+                .join("")
+        );
+        if (expTo < expFrom) {
+            isValid = false;
+            message = "end date (To) can't predate the start one (From)";
         }
     }
 
-    toggleError(field, !isValid, rule.message);
+    toggleError(field, !isValid, message);
     return isValid;
 }
 

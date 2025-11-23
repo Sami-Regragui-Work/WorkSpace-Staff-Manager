@@ -2,7 +2,9 @@
 import { initialize } from "./workersCRUD.js";
 import { sideBarAction } from "./sideBarCollapse.js";
 import { startRooms } from "./rooms.js";
+import { responsive } from "./responsive.js";
 
 initialize();
+responsive();
 sideBarAction();
 startRooms();

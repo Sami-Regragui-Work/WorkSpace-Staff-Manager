@@ -97,7 +97,7 @@ function updateSidebarWorkers() {
 }
 
 function showWorkerInRoom(roomObj = null) {
-    console.trace("roomObj.id:", roomObj.id);
+    // console/.trace("roomObj.id:", roomObj.id);
     const roomDiv = roomTarget || rooms.querySelector(`#room-${roomObj.id}`);
     // console/.log(roomDiv);
     const assignedDiv = roomDiv.querySelector(".assigned-workers");

@@ -1,8 +1,11 @@
+import { roomsBodyRatio } from "./responsive.js";
+
 const sidebarBtn = document.getElementById("sidebar__btn");
 const sidebarArrow = document.getElementById("aside__arrow");
 const sideBar = document.getElementById("sidebar");
+let collapsedGlobalVar = false;
 
-// console.log(sidebarArrow.getBoundingClientRect());
+// console/.log(sidebarArrow.getBoundingClientRect());
 function sideBarAction() {
     sidebarBtn.addEventListener("click", () => {
         sidebarArrow.firstElementChild.classList.toggle("rotate-180");
@@ -14,7 +17,9 @@ function sideBarAction() {
                 node.classList.toggle("hidden");
         });
         sideBar.classList.toggle("flex-1");
+        collapsedGlobalVar = !sideBar.classList.contains("flex-1");
+        roomsBodyRatio();
     });
 }
 
-export { sideBarAction };
+export { sideBarAction, collapsedGlobalVar };

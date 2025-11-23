@@ -146,41 +146,47 @@ h3 {
 /* Room styles */
 #room-1 {
     grid-area: room-1;
-    @apply bg-[rgba(0,255,255,0.6)] h-[96%];
+    @apply h-[96%];
+    /* @apply bg-[rgba(0,255,255,0.6)]; */
 }
 #room-2 {
     grid-area: room-2;
-    @apply bg-[rgba(137,43,226,0.6)];
+    /* @apply bg-[rgba(137,43,226,0.6)]; */
 }
 #room-3 {
     grid-area: room-3;
-    @apply bg-[rgba(0,255,255,0.6)];
+    /* @apply bg-[rgba(0,255,255,0.6)]; */
 }
 #room-4 {
     grid-area: room-4;
-    @apply bg-[rgba(137,43,226,0.6)];
+    /* @apply bg-[rgba(137,43,226,0.6)]; */
 }
 #room-5 {
     grid-area: room-5;
-    @apply bg-[rgba(0,255,255,0.6)] h-[96%];
+    @apply h-[98%];
+    /* @apply bg-[rgba(0,255,255,0.6)]; */
 }
 #room-6 {
     grid-area: room-6;
-    @apply bg-[rgba(137,43,226,0.6)];
+    @apply h-[98%];
+    /* @apply bg-[rgba(137,43,226,0.6)]; */
 }
 
 /* Passage styles */
 #passage-1 {
     grid-area: passage-1;
-    @apply bg-[rgba(165,42,42,0.6)] mt-[1%];
+    @apply mt-[1%];
+    /* @apply bg-[rgba(165,42,42,0.6)]; */
 }
 #passage-2 {
     grid-area: passage-2;
-    @apply bg-[rgba(255,255,255,0.6)] ml-[2%] mt-[2%] h-[88%];
+    @apply ml-[2%] mt-[2%] h-[88%];
+    /* @apply bg-[rgba(255,255,255,0.6)]; */
 }
 #passage-3 {
     grid-area: passage-3;
-    @apply bg-[rgba(0,0,255,0.6)] mt-[-6%];
+    @apply mt-[-6%];
+    /* @apply bg-[rgba(0,0,255,0.6)]; */
 }
 
 /* Grouped custom-margin/height styles */

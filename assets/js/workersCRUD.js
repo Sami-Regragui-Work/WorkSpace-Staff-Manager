@@ -35,17 +35,6 @@ const fieldsLabs = [
 
 const expLabs = ["company", "role", "from", "to"];
 
-// async function fetchJSON(callback, ...args) {
-//     try {
-//         const res = (await fetch("assets/workers.json")) || [];
-//         if (!res.ok) throw new Error("Failed to fetch JSON");
-//         const resBody = await res.json();
-//         callback(...args, resBody);
-//     } catch (err) {
-//         console.error("Error:", err);
-//     }
-// }
-
 function getExpInputs() {
     const expInputs = Array.from(experiences.querySelectorAll("input"));
     return expInputs;

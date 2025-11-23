@@ -1021,12 +1021,48 @@ article[worker-id] {
 .close__modal, #close-details-modal {
   cursor: pointer;
 }
-@media (max-width: 780px) {
+@media (max-width: 768px) {
+  #aside-workers > article[worker-id], #aside-workers .aside__worker__left {
+    flex-direction: column;
+    min-width: unset;
+  }
+  #aside-workers .worker__btns {
+    margin-inline: auto;
+    flex-direction: row;
+  }
+  #aside-workers .worker__btns > button {
+    width: 5rem;
+  }
+  aside {
+    min-width: unset;
+  }
+}
+@media (max-width: 550px) {
   main {
     flex-direction: column;
   }
   aside path {
     transform: rotate(90deg);
+  }
+  .modal {
+    width: 90% !important;
+  }
+  #aside-workers > article[worker-id] {
+    min-width: 20.5rem;
+  }
+  #aside-workers > article[worker-id], #aside-workers .aside__worker__left {
+    flex-direction: row;
+  }
+  #aside-workers .worker__btns {
+    margin-inline: unset;
+    margin-left: auto;
+    flex-direction: column;
+  }
+  #aside-workers .worker__btns > button {
+    width: 100%;
+  }
+  aside {
+    min-width: 270px;
   }
 }
 @property --tw-border-style {

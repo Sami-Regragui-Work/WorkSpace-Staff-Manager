@@ -2,7 +2,7 @@
 
 :root {
     --primary-clr: oklch(59.207% 0.21386 257.434); /* #0077f9 */
-    --secondary-clr: oklch(83.854% 0.17086 83.341); /* #ffc107 */
+    --secondary-clr: oklch(72.459% 0.14732 83.356); /* #ffc107 */
     --dark-blue-clr: oklch(47.952% 0.16437 256.113); /* #0058b8 */
     --grad-blue-to-dark-clr: linear-gradient(
         to right,
@@ -62,6 +62,14 @@ h3 {
     @apply text-(--bg-primary-clr) bg-(--primary-clr) aspect-square inline-flex hover:bg-(--dark-blue-clr);
 }
 
+.btn--edit {
+    @apply bg-(--secondary-clr) text-shadow-2xs rounded-(--b-r) aspect-auto px-2 hover:bg-[color-mix(in_oklab,var(--accent-clr)_30%,white_70%)] hover:shadow-[0_0_0_2px_inset_var(--secondary-clr)] hover:text-(--secondary-clr);
+}
+
+.btn--delete {
+    @apply bg-red-500 text-shadow-2xs rounded-(--b-r) aspect-auto px-2 hover:bg-[color-mix(in_oklab,var(--accent-clr)_30%,white_70%)] hover:shadow-[0_0_0_2px_inset_var(--color-red-500)] hover:text-red-500;
+}
+
 .btn--xroom {
     @apply bg-red-500 min-w-8 max-w-8 hover:bg-red-700;
 }
@@ -77,6 +85,15 @@ h3 {
 
 .btn--exp {
     @apply text-(--bg-primary-clr) bg-(--secondary-clr) shadow-[0_0_0_2px_inset_var(--secondary-clr)] hover:text-(--secondary-clr);
+}
+
+.worker__btns {
+    @apply flex flex-col items-end justify-center h-full min-w-[49px] gap-5 ml-auto;
+}
+
+.worker__btns > button {
+    font-size: var(--fs-text);
+    @apply w-full text-(--bg-primary-clr);
 }
 
 .center {
@@ -258,4 +275,13 @@ label {
 
 .input--valid {
     @apply border-green-500 bg-green-200;
+}
+
+article[worker-id] {
+    @apply cursor-pointer ring-inset ring-amber-300 hover:ring-2 hover:bg-[color-mix(in_oklab,var(--accent-clr)_30%,white_70%)];
+}
+
+.close__modal,
+#close-details-modal {
+    @apply cursor-pointer;
 }

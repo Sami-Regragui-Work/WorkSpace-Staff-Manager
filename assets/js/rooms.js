@@ -5,6 +5,7 @@ import {
     workersDiv,
     showAddedWorker,
     updateWorkersArr,
+    updateSidebarWorkers,
 } from "./workersCRUD.js";
 import { addWorkersLS, getWorkersLS /*, updateWorkerLS*/ } from "./store.js";
 
@@ -85,15 +86,6 @@ function getUnassignedWorkers() {
     // // console/.log(assignedIds);
     // return allWorkers.filter((worker) => !assignedIds.includes(worker.id));
     return allWorkers.filter((worker) => !worker.where);
-}
-
-function updateSidebarWorkers() {
-    workersDiv.innerHTML = "";
-    const unassignedWorkers = getUnassignedWorkers();
-    // console/.log(unassignedWorkers);
-    unassignedWorkers.forEach((worker) => {
-        showAddedWorker(worker);
-    });
 }
 
 function showWorkerInRoom(roomObj = null) {

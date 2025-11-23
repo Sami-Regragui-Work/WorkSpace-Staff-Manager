@@ -1,6 +1,10 @@
 import { validateForm, toggleError } from "./validation.js";
-import { getWorkersLS, addWorkersLS /*, updateWorkerLS*/ } from "./store.js";
-import { fillAssignModal } from "./rooms.js";
+import {
+    getWorkersLS,
+    addWorkersLS /*, updateWorkerLS*/,
+    deleteWorkerLS,
+} from "./store.js";
+// import { fillAssignModal } from "./rooms.js";
 
 const addWorkerBtn = document.getElementById("add-worker");
 const addExperienceBtn = document.getElementById("add-experience");
@@ -41,9 +45,7 @@ function getExpInputs() {
 }
 
 function getModalInputs() {
-    const inputs = Array.from(modalForum.querySelectorAll("input"));
-    const dropDown = modalForum.querySelector("#role");
-    inputs.splice(2, 0, dropDown);
+    const inputs = Array.from(modalForum.querySelectorAll("input, select"));
     return inputs;
 }
 
@@ -56,6 +58,26 @@ function updateWorkersArr(updatedWorker) {
         if (worker.id == updatedWorker.id) workers[ind] = updatedWorker;
     });
     // console/.log(workers);
+}
+
+function updateSidebarWorkers() {
+    workersDiv.innerHTML = "";
+    workers.forEach((worker) => {
+        if (!worker.where) showAddedWorker(worker);
+    });
+}
+
+function workerActions(e) {
+    const target = e.target;
+    const type = target.getAttribute("data-type");
+    if (type == "edit") addWorker(e, true);
+    else if (type == "delete") {
+        const workerArticle = target.closest("article");
+        const workerId = Number(workerArticle.getAttribute("worker-id"));
+        workers.length = 0;
+        workers.push(...deleteWorkerLS(workerId));
+        updateSidebarWorkers();
+    }
 }
 
 function addWorker(e, edit = false) {
@@ -74,7 +96,9 @@ function addWorker(e, edit = false) {
     } else {
         const clickTarget = e.target;
         if (clickTarget.tagName == "BUTTON") {
-            const id = clickTarget.parentElement.getAttribute("worker-id");
+            const id = Number(
+                clickTarget.closest("article").getAttribute("worker-id")
+            );
             const infos = workers.find((infos) => infos.id == id);
             // expCounter = infos.experiences.length;
             setWorkerInfos(infos);
@@ -99,7 +123,7 @@ function showAddedWorker(workerInfos, edit = false) {
     if (!edit) {
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
-        const divTemplate = `
+        const articleTemplate = `
         <article worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
             <div class='aside__worker__left flex gap-3 items-center '>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
@@ -108,15 +132,20 @@ function showAddedWorker(workerInfos, edit = false) {
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
                 </div>
             </div>
-            <button class='btn text-(--secondary-clr) ml-auto' style='font-size: var(--fs-text)' >Edit</button>
+            <div class='worker__btns'>
+            <button data-type='edit' class='btn btn--edit '>Edit</button>
+            <button data-type='delete' class='btn btn--delete '>Delete</button>
+            </div>
         </article>
     `;
-        workersDiv.innerHTML += divTemplate;
+        workersDiv.innerHTML += articleTemplate;
     } else {
-        const div = document.querySelector(`[worker-id='${workerInfos.id}']`);
+        const workerArticle = document.querySelector(
+            `[worker-id='${workerInfos.id}']`
+        );
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
-        div.innerHTML = `
+        workerArticle.innerHTML = `
         <div class='aside__worker__left flex gap-3 items-center '>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
@@ -124,7 +153,10 @@ function showAddedWorker(workerInfos, edit = false) {
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
                 </div>
             </div>
-            <button class='btn text-(--secondary-clr) ml-auto' style='font-size: var(--fs-text)' >Edit</button>
+            <div class='worker__btns'>
+            <button data-type='edit' class='btn btn--edit '>Edit</button>
+            <button data-type='delete' class='btn btn--delete '>Delete</button>
+            </div>
     `;
     }
 }
@@ -263,9 +295,7 @@ function initialize() {
     saveWorkerBtn.addEventListener("click", getWorkerInfos);
     addExperienceBtn.addEventListener("click", addExperience);
     picUrl.addEventListener("input", setPreview);
-    workersDiv.addEventListener("click", (e) => {
-        addWorker(e, true);
-    });
+    workersDiv.addEventListener("click", workerActions);
     closeModalBtns.forEach((btn) => {
         btn.addEventListener("click", closeModal);
     });
@@ -284,4 +314,5 @@ export {
     workersDiv,
     showAddedWorker,
     updateWorkersArr,
+    updateSidebarWorkers,
 };

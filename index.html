@@ -332,9 +332,59 @@
                 </div>
             </div>
             <!-- After Asign Modal -->
+            <!-- Before Details Modal -->
+            <div
+                id="worker-details-modal"
+                tabindex="-1"
+                aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full bg-[rgba(0,0,0,0.6)]"
+            >
+                <div class="relative p-4 w-[60%] max-h-full">
+                    <!-- Modal content -->
+                    <article class="relative bg-white rounded-lg shadow-sm">
+                        <!-- Modal header -->
+                        <div
+                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200"
+                        >
+                            <h2 class="font-bold text-xl text-blue-600">
+                                Profile
+                            </h2>
+                            <button
+                                type="button"
+                                id="close-details-modal"
+                                class="text-(--accent-clr) bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            >
+                                <svg
+                                    class="w-3 h-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                    />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div
+                            id="worker-details-content"
+                            class="modal__body p-4 md:p-5"
+                        ></div>
+                        <!-- We'll dynamically inject the profile info here -->
+                    </article>
+                </div>
+            </div>
+            <!-- After Details Modal -->
             <aside
                 id="sidebar"
-                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5 min-w-[249px]"
+                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5 min-w-[270px]"
             >
                 <div class="aside__top flex relative min-w-[15px] min-h-[36px]">
                     <h2>Staff Members</h2>

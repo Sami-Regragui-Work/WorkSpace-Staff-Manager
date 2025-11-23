@@ -18,6 +18,7 @@ function deleteWorkerLS(id) {
     const workers = getWorkersLS();
     const updated = workers.filter((worker) => worker.id != id);
     localStorage.setItem("workers", JSON.stringify(updated));
+    return updated;
 }
 
 // function clearWorkersLS() {

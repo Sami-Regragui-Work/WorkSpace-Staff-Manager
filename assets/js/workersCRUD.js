@@ -4,7 +4,7 @@ import {
     addWorkersLS /*, updateWorkerLS*/,
     deleteWorkerLS,
 } from "./store.js";
-// import { fillAssignModal } from "./rooms.js";
+import { roomsInfos, getListElementById } from "./rooms.js";
 
 const addWorkerBtn = document.getElementById("add-worker");
 const addExperienceBtn = document.getElementById("add-experience");
@@ -15,6 +15,9 @@ const modalForum = document.getElementById("add-worker-modal");
 const experiences = document.getElementById("experiences");
 const picUrl = document.getElementById("pic");
 const closeModalBtns = document.querySelectorAll(".close__modal");
+const detailsModal = document.getElementById("worker-details-modal");
+const detailsBody = document.getElementById("worker-details-content");
+const closeDetailsBtn = document.getElementById("close-details-modal");
 
 const fallBackImg = "assets/images/imgPlaceHolder.svg";
 // to reset experiences to initial state (one experiences)
@@ -69,15 +72,18 @@ function updateSidebarWorkers() {
 
 function workerActions(e) {
     const target = e.target;
-    const type = target.getAttribute("data-type");
-    if (type == "edit") addWorker(e, true);
-    else if (type == "delete") {
-        const workerArticle = target.closest("article");
-        const workerId = Number(workerArticle.getAttribute("worker-id"));
-        workers.length = 0;
-        workers.push(...deleteWorkerLS(workerId));
-        updateSidebarWorkers();
-    }
+    if (target.tagName == "BUTTON") {
+        const type = target.getAttribute("data-type");
+        if (type == "edit") addWorker(e, true);
+        else {
+            //delete
+            const workerArticle = target.closest("article");
+            const workerId = Number(workerArticle.getAttribute("worker-id"));
+            workers.length = 0;
+            workers.push(...deleteWorkerLS(workerId));
+            updateSidebarWorkers();
+        }
+    } else showDetailsModal(target);
 }
 
 function addWorker(e, edit = false) {
@@ -159,6 +165,73 @@ function showAddedWorker(workerInfos, edit = false) {
             </div>
     `;
     }
+}
+
+function showDetailsModal(target) {
+    const workerArticle =
+        target.tagName == "ARTICLE" ? target : target.closest("article");
+    if (workerArticle.tagName != "ARTICLE") return;
+    const workerId = workerArticle.getAttribute("worker-id");
+    const worker = getListElementById(workers, workerId);
+    fillWorkerDetails(worker);
+    detailsModal.classList.remove("hidden");
+    detailsModal.classList.add("flex");
+    detailsModal.ariaHidden = false;
+}
+
+function closeDetailsModal() {
+    closeDetailsBtn.blur();
+    detailsModal.classList.remove("flex");
+    detailsModal.classList.add("hidden");
+    detailsModal.ariaHidden = true;
+}
+
+function addExperiencesToDetail(experiences) {
+    if (experiences.length == 0) {
+        return `<div class="text-gray-400 italic mb-3">No experience records</div>`;
+    }
+    return experiences
+        .map(
+            (exp) =>
+                `<div class="mb-4 p-4 border rounded bg-gray-50">
+            <div class="text-blue-700 font-bold text-lg">${exp.company}</div>
+            <div><b>Role:</b> ${exp.role}</div>
+            <div><b>Period:</b> ${exp.from} - ${exp.to}</div>
+        </div>`
+        )
+        .join("");
+}
+
+function fillWorkerDetails(workerInfos) {
+    const roleText =
+        modalForum.querySelector("#role").options[workerInfos.role].text;
+    detailsBody.innerHTML = `
+        <div class="flex gap-6 items-center pb-6">
+            <img src="${workerInfos.photoUrl}"
+                 alt="Profile Photo"
+                 class="w-20 h-20 rounded-full border-4 border-blue-200 object-cover"
+                 onerror="this.src='${fallBackImg}';""/>
+            <div>
+                <h3 class="text-xl font-bold">${workerInfos.name}</h3>
+                <div class="text-blue-600 font-semibold mb-1">${roleText}</div>
+                <div class="text-gray-600 text-sm"><b>Email:</b> ${
+                    workerInfos.email
+                }</div>
+                <div class="text-gray-600 text-sm"><b>Phone:</b> ${
+                    workerInfos.phone
+                }</div>
+                <div class="text-gray-600 text-sm"><b>Current Location:</b> ${
+                    workerInfos.where
+                        ? roomsInfos[workerInfos.where].title
+                        : "Unassigned"
+                }</div>
+            </div>
+        </div>
+        <div>
+            <h4 class="font-semibold text-lg mb-2">Work Experience</h4>
+            ${addExperiencesToDetail(workerInfos.experiences)}
+        </div>
+    `;
 }
 
 function storeWorkerInfos(values) {
@@ -299,6 +372,7 @@ function initialize() {
     closeModalBtns.forEach((btn) => {
         btn.addEventListener("click", closeModal);
     });
+    closeDetailsBtn.addEventListener("click", closeDetailsModal);
     workers.forEach((worker) => {
         if (!worker.where) showAddedWorker(worker);
     });
@@ -315,4 +389,5 @@ export {
     showAddedWorker,
     updateWorkersArr,
     updateSidebarWorkers,
+    showDetailsModal,
 };

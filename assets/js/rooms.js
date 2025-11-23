@@ -2,10 +2,11 @@ import {
     workers,
     fallBackImg,
     modalForum,
-    workersDiv,
-    showAddedWorker,
+    // workersDiv,
+    // showAddedWorker,
     updateWorkersArr,
     updateSidebarWorkers,
+    showDetailsModal,
 } from "./workersCRUD.js";
 import { addWorkersLS, getWorkersLS /*, updateWorkerLS*/ } from "./store.js";
 
@@ -54,7 +55,7 @@ const roomsInfos = [
     },
     {
         id: 6,
-        title: "Archive",
+        title: "Archive Room",
         workersIds: [],
         allowedRoles: ["4", "6"],
         capacity: 5,
@@ -257,9 +258,10 @@ function unassignWorker(target) {
 
 function roomActions(e) {
     const target = e.target;
-    if (target.getAttribute("data-type") == "add") pickWorkers(target);
-    else if (target.getAttribute("data-type") == "unassign")
-        unassignWorker(target);
+    if (target.tagName == "BUTTON") {
+        if (target.getAttribute("data-type") == "add") pickWorkers(target);
+        else unassignWorker(target); //unassignBtn
+    } else showDetailsModal(target);
 }
 
 function startRooms() {
@@ -278,4 +280,4 @@ function startRooms() {
     assignWorkerFromLs();
 }
 
-export { startRooms, fillAssignModal };
+export { startRooms, fillAssignModal, roomsInfos, getListElementById };

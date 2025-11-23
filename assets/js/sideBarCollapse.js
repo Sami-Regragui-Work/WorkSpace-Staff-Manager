@@ -6,6 +6,7 @@ const sideBar = document.getElementById("sidebar");
 function sideBarAction() {
     sidebarBtn.addEventListener("click", () => {
         sidebarArrow.firstElementChild.classList.toggle("rotate-180");
+        sideBar.classList.toggle("min-w-[249px]");
         Array.from(sideBar.children).forEach((node, ind) => {
             if (ind == 0) {
                 node.children[0].classList.toggle("hidden");

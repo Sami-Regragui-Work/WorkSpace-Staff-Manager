@@ -1,6 +1,6 @@
 import { fallBackImg } from "./workersCRUD.js";
 
-let ignoreValidation = true;
+// let ignoreValidation = true; // added this just for testing without struggle
 
 const validationRules = [
     {
@@ -96,7 +96,7 @@ function validateField(field, rule) {
 }
 
 function validateForm(fields) {
-    if (ignoreValidation) return true;
+    // if (ignoreValidation) return true; // read comment at the top of the script
     let isValid = true;
     // const fields = Array.from(document.querySelectorAll("input")).slice(1);
     // const roleField = document.querySelector("#role");

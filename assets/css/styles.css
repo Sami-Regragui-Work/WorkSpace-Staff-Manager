@@ -286,12 +286,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
-  .aspect-430\/243 {
-    aspect-ratio: 430/243;
-  }
   .h-3 {
     height: calc(var(--spacing) * 3);
   }
@@ -325,9 +319,6 @@
   .min-h-\[36px\] {
     min-height: 36px;
   }
-  .min-h-\[300px\] {
-    min-height: 300px;
-  }
   .w-3 {
     width: calc(var(--spacing) * 3);
   }
@@ -343,20 +334,17 @@
   .w-full {
     width: 100%;
   }
-  .max-w-full {
-    max-width: 100%;
-  }
   .min-w-\[15px\] {
     min-width: 15px;
   }
   .min-w-\[20\.5rem\] {
     min-width: 20.5rem;
   }
+  .min-w-\[249px\] {
+    min-width: 249px;
+  }
   .min-w-dvw {
     min-width: 100dvw;
-  }
-  .min-w-full {
-    min-width: 100%;
   }
   .flex-1 {
     flex: 1;
@@ -364,14 +352,8 @@
   .flex-3 {
     flex: 3;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .origin-center {
     transform-origin: center;
@@ -381,9 +363,6 @@
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -417,6 +396,9 @@
   }
   .gap-5 {
     gap: calc(var(--spacing) * 5);
+  }
+  .overflow-hidden {
+    overflow: hidden;
   }
   .overflow-x-clip {
     overflow-x: clip;
@@ -494,9 +476,6 @@
   .p-\(--padding-g\) {
     padding: var(--padding-g);
   }
-  .p-2 {
-    padding: calc(var(--spacing) * 2);
-  }
   .p-2\.5 {
     padding: calc(var(--spacing) * 2.5);
   }
@@ -537,16 +516,9 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .shadow-sm {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .transition-all {
     transition-property: all;
@@ -674,7 +646,6 @@ h3 {
 .btn--small {
   display: inline-flex;
   aspect-ratio: 1 / 1;
-  max-height: 4vw;
   background-color: var(--primary-clr);
   color: var(--bg-primary-clr);
   &:hover {
@@ -729,9 +700,23 @@ h3 {
   background: url("../images/workers-studio-87kb.webp") no-repeat center/contain;
 }
 .rooms {
-  grid-template-columns: repeat(2, 19%) 16.5% repeat(2, 23%);
-  grid-template-rows: auto auto auto;
+  grid-template-columns: repeat(2, 1.65fr) 1.5fr repeat(2, 2fr);
   grid-template-areas: "room-1 room-1 passage-1 room-2 room-3" "room-4 room-4 passage-2 passage-2 passage-2" "room-4 room-4 passage-3 room-5 room-6";
+}
+.rooms--original {
+  height: 100%;
+}
+.center > .wrapper--original {
+  aspect-ratio: 430/243;
+  width: 100%;
+}
+.rooms--modified {
+  height: 97%;
+  grid-auto-rows: 34%;
+}
+.center > .wrapper--modified {
+  aspect-ratio: 416/236;
+  height: 97%;
 }
 .room {
   position: relative;
@@ -741,69 +726,76 @@ h3 {
   justify-content: center;
 }
 .room > span {
-  margin-top: calc(5% * -1);
   --tw-font-weight: var(--fw-label);
   font-weight: var(--fw-label);
   color: var(--bold-text-clr);
   text-shadow: 0 0 4px var(--tw-text-shadow-color, var(--bg-secondary-clr));
-  font-size: 1vw;
+  position: absolute;
+  top: 5%;
+  font-size: 1.2rem;
+}
+.room > .assigned-workers {
+  position: absolute;
+  top: 50%;
+  --tw-translate-y: calc(50% * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
+.room > button {
+  position: absolute;
+  bottom: 3%;
+  height: 2.5rem;
 }
 #room-1 {
   grid-area: room-1;
-  width: 98.5%;
   height: 96%;
+  background-color: rgba(0,255,255,0.6);
 }
 #room-2 {
   grid-area: room-2;
+  background-color: rgba(137,43,226,0.6);
 }
 #room-3 {
   grid-area: room-3;
+  background-color: rgba(0,255,255,0.6);
 }
 #room-4 {
   grid-area: room-4;
-  width: 98.5%;
-  height: 99%;
+  background-color: rgba(137,43,226,0.6);
 }
 #room-5 {
   grid-area: room-5;
-  width: 94%;
-  margin-left: 4%;
+  height: 96%;
+  background-color: rgba(0,255,255,0.6);
 }
 #room-6 {
   grid-area: room-6;
+  background-color: rgba(137,43,226,0.6);
 }
 #passage-1 {
   grid-area: passage-1;
-  height: 107%;
-  width: 96%;
+  margin-top: 1%;
+  background-color: rgba(165,42,42,0.6);
 }
 #passage-2 {
   grid-area: passage-2;
-  width: 98.3%;
-  margin-left: 1%;
-  height: 132%;
   margin-top: 2%;
+  margin-left: 2%;
+  height: 88%;
+  background-color: rgba(255,255,255,0.6);
 }
 #passage-3 {
   grid-area: passage-3;
-  margin-top: 15%;
-  width: 97%;
-  height: 87%;
+  margin-top: -6%;
+  background-color: rgba(0,0,255,0.6);
 }
-#room-2, #room-3 {
-  width: 95%;
+#passage-1, #passage-3 {
+  margin-left: 6.5%;
+  height: 104%;
+}
+#room-2, #room-5 {
   margin-left: 3%;
-  height: 99%;
-}
-#room-5, #room-6 {
-  height: 72%;
-  margin-top: 28%;
 }
 #room-3, #room-6 {
-  margin-left: 2%;
-  width: 96%;
-}
-.passage:not(#passage-2) {
   margin-left: 3%;
 }
 .assigned-workers {
@@ -946,11 +938,6 @@ label {
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -963,6 +950,21 @@ label {
   syntax: "<percentage>";
   inherits: false;
   initial-value: 100%;
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
 }
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
@@ -983,10 +985,12 @@ label {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-duration: initial;
       --tw-text-shadow-color: initial;
       --tw-text-shadow-alpha: 100%;
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
     }
   }
 }

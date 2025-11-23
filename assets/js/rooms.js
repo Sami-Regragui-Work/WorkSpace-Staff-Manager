@@ -6,7 +6,7 @@ import {
     showAddedWorker,
     updateWorkersArr,
 } from "./workersCRUD.js";
-import { addWorkerLS, getWorkersLS /*, updateWorkerLS*/ } from "./store.js";
+import { addWorkersLS, getWorkersLS /*, updateWorkerLS*/ } from "./store.js";
 
 const rooms = document.getElementById("rooms");
 const roomsModal = document.getElementById("worker-assign-modal");
@@ -64,15 +64,27 @@ let roomTarget;
 let targetId;
 let selectedWorkerIds = [];
 
-let unassignAll = true;
-unassignAll = false;
+// let unassignAll = true;
+// unassignAll = false; // added these 2, just for debugging prior to implement the individuel unassign logic
+
+function toggleRoomBg(roomDiv) {
+    if (["1", "5"].includes(roomDiv.id.slice(-1))) return;
+    const roomObj = getListElementById(roomsInfos, roomDiv.id.slice(-1));
+    if (!roomObj.workersIds.length) roomDiv.classList.add("room--danger");
+    else roomDiv.classList.remove("room--danger");
+}
+
+function getListElementById(list, targetId) {
+    return list.find((element) => element.id == targetId);
+}
 
 function getUnassignedWorkers() {
     const allWorkers = getWorkersLS();
     // console/.log(getWorkersLS());
-    const assignedIds = roomsInfos.flatMap((room) => room.workersIds);
-    // console/.log(assignedIds);
-    return allWorkers.filter((worker) => !assignedIds.includes(worker.id));
+    // const assignedIds = roomsInfos.flatMap((room) => room.workersIds);
+    // // console/.log(assignedIds);
+    // return allWorkers.filter((worker) => !assignedIds.includes(worker.id));
+    return allWorkers.filter((worker) => !worker.where);
 }
 
 function updateSidebarWorkers() {
@@ -90,15 +102,16 @@ function showWorkerInRoom(roomObj = null) {
     // console/.log(roomDiv);
     const assignedDiv = roomDiv.querySelector(".assigned-workers");
 
-    roomDiv.classList.remove("room--danger");
+    // roomDiv.classList.remove("room--danger");
+    toggleRoomBg(roomDiv);
 
     selectedWorkerIds.forEach((workerId) => {
-        const worker = workers.find((w) => w.id == workerId);
+        const worker = getListElementById(workers, workerId);
         if (!worker) return;
         assignedDiv.innerHTML += `
             <article worker-id="${worker.id}" class="assigned-worker">
                 <h3>${worker.name}</h3>
-                <button class="btn btn--small btn--xroom" title="Remove">
+                <button data-type="unassign" class="btn btn--small btn--xroom" title="Remove">
                     &times;
                 </button>
             </article>
@@ -113,7 +126,7 @@ function assignWorker(e) {
         return;
     }
     const roomId = targetId;
-    const room = roomsInfos.find((room) => room.id == roomId);
+    const room = getListElementById(roomsInfos, roomId);
 
     let availableSlots = room.capacity - room.workersIds.length;
     let addedCount = 0;
@@ -123,13 +136,13 @@ function assignWorker(e) {
             room.workersIds.push(workerId);
             availableSlots--;
             addedCount++;
-            let workersLS = getWorkersLS();
+            const workersLS = getWorkersLS();
             // console./log(workersLS);
-            const worker = workersLS.find((w) => w.id == workerId);
+            const worker = getListElementById(workersLS, workerId);
             worker.where = room.id;
             updateWorkersArr(worker);
 
-            addWorkerLS(workers);
+            addWorkersLS(workers);
         }
     });
 
@@ -149,20 +162,20 @@ function assignWorker(e) {
 }
 
 function selectWorker(e) {
-    const worker = e.target.closest("article[worker-id]");
-    if (!worker) return;
+    const workerArticle = e.target.closest("article[worker-id]");
+    if (!workerArticle) return;
 
-    const workerId = Number(worker.getAttribute("worker-id"));
+    const workerId = Number(workerArticle.getAttribute("worker-id"));
 
     if (selectedWorkerIds.includes(workerId)) {
-        worker.classList.remove(
+        workerArticle.classList.remove(
             "border-4",
             "border-(--primary-clr)",
             "selected-worker"
         );
         selectedWorkerIds = selectedWorkerIds.filter((id) => id != workerId);
     } else {
-        worker.classList.add(
+        workerArticle.classList.add(
             "border-4",
             "border-(--primary-clr)",
             "selected-worker"
@@ -176,8 +189,9 @@ function fillAssignModal() {
         workersList.innerHTML = "";
         getUnassignedWorkers().forEach((worker) => {
             targetId = roomTarget.id.slice(-1);
-            const canAccess = roomsInfos.find(
-                (room) => room.id == targetId
+            const canAccess = getListElementById(
+                roomsInfos,
+                targetId
             ).allowedRoles;
 
             if (canAccess.includes(worker.role)) {
@@ -192,7 +206,6 @@ function fillAssignModal() {
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
                 </div>
             </div>
-            <button class='btn text-(--secondary-clr) ml-auto' style='font-size: var(--fs-text)' >Edit</button>
         </article>
         `;
             }
@@ -207,14 +220,12 @@ function closeRoomsModal() {
     closeBtn.blur();
 }
 
-function pickWorkers(e) {
+function pickWorkers(target) {
     // console/.log(target.getAttribute("data-type"));
-    if (e.target.getAttribute("data-type") == "add") {
-        roomTarget = e.target.parentElement;
-        roomsModal.classList.remove("hidden");
-        roomsModal.classList.add("flex");
-        roomsModal.ariaHidden = false;
-    }
+    roomTarget = target.parentElement;
+    roomsModal.classList.remove("hidden");
+    roomsModal.classList.add("flex");
+    roomsModal.ariaHidden = false;
     fillAssignModal();
 }
 
@@ -222,7 +233,7 @@ function assignWorkerFromLs() {
     const workersLS = getWorkersLS();
     workersLS.forEach((worker) => {
         if (worker.where) {
-            const room = roomsInfos.find((r) => r.id == worker.where);
+            const room = getListElementById(roomsInfos, worker.where);
             if (room) room.workersIds.push(worker.id);
             // console/.log(room);
         }
@@ -233,22 +244,45 @@ function assignWorkerFromLs() {
             showWorkerInRoom(room);
         }
     });
+    // updateSidebarWorkers();
+}
+
+function unassignWorker(target) {
+    const workerArticle = target.closest("article[worker-id]");
+    const workerId = workerArticle.getAttribute("worker-id");
+    const roomDiv = target.closest(".room");
+    const room = getListElementById(roomsInfos, roomDiv.id.slice(-1));
+    const ind = room.workersIds.findIndex((id) => id == workerId);
+    room.workersIds.splice(ind, 1);
+    toggleRoomBg(target.closest(".room"));
+    workerArticle.remove();
+    const worker = getListElementById(workers, workerId);
+    delete worker.where;
+    updateWorkersArr(worker);
+    addWorkersLS(workers);
     updateSidebarWorkers();
 }
 
+function roomActions(e) {
+    const target = e.target;
+    if (target.getAttribute("data-type") == "add") pickWorkers(target);
+    else if (target.getAttribute("data-type") == "unassign")
+        unassignWorker(target);
+}
+
 function startRooms() {
-    rooms.addEventListener("click", pickWorkers);
+    rooms.addEventListener("click", roomActions);
     closeBtn.addEventListener("click", closeRoomsModal);
     workersList.addEventListener("click", selectWorker);
     assignBtn.addEventListener("click", assignWorker);
 
-    if (unassignAll) {
-        workers.forEach((worker) => {
-            if (worker.where) delete worker.where;
-        });
-        updateWorkersArr(workers);
-        addWorkerLS(workers);
-    }
+    // if (unassignAll) {
+    //     workers.forEach((worker) => {
+    //         if (worker.where) delete worker.where;
+    //     });
+    //     updateWorkersArr(workers);
+    //     addWorkersLS(workers);
+    // }
     assignWorkerFromLs();
 }
 

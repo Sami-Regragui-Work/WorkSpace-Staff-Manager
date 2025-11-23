@@ -334,7 +334,7 @@
             <!-- After Asign Modal -->
             <aside
                 id="sidebar"
-                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5"
+                class="flex-1 bg-(--bg-primary-clr) rounded-(--b-r) flex flex-col p-(--padding-bigger) transition-all duration-500 gap-5 min-w-[249px]"
             >
                 <div class="aside__top flex relative min-w-[15px] min-h-[36px]">
                     <h2>Staff Members</h2>
@@ -372,11 +372,11 @@
                 </button>
             </aside>
             <div
-                class="center flex-3 m-(--padding-g) flex justify-center items-center overflow-x-hidden"
+                class="center flex-3 m-(--padding-g) flex justify-center items-center overflow-hidden"
             >
-                <div class="wrapper w-full aspect-430/243 mx-[1%] mt-[0.5%]">
+                <div class="wrapper wrapper--original mx-[1%] mt-[0.5%]">
                     <!-- for responsivity, turn w-full to h-full when screen max-height reaches the wrapper height -->
-                    <div id="rooms" class="rooms grid h-full bg/-[#0011ff96]">
+                    <div id="rooms" class="rooms grid rooms--original">
                         <div id="room-1" class="room">
                             <span>Conference Room</span>
                             <div class="assigned-workers"></div>

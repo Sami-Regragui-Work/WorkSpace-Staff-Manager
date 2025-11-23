@@ -1,5 +1,5 @@
 import { validateForm, toggleError } from "./validation.js";
-import { getWorkersLS, addWorkerLS /*, updateWorkerLS*/ } from "./store.js";
+import { getWorkersLS, addWorkersLS /*, updateWorkerLS*/ } from "./store.js";
 import { fillAssignModal } from "./rooms.js";
 
 const addWorkerBtn = document.getElementById("add-worker");
@@ -179,10 +179,10 @@ function storeWorkerInfos(values) {
     if (edit) {
         // workers.splice(getWorkersIndex(infos.id), 1, infos);
         updateWorkersArr(infos);
-        addWorkerLS(workers);
+        addWorkersLS(workers);
     } else {
         workers.push(infos);
-        addWorkerLS(workers);
+        addWorkersLS(workers);
     }
     showAddedWorker(infos, edit);
 }
@@ -281,7 +281,7 @@ function initialize() {
         btn.addEventListener("click", closeModal);
     });
     workers.forEach((worker) => {
-        showAddedWorker(worker);
+        if (!worker.where) showAddedWorker(worker);
     });
 }
 

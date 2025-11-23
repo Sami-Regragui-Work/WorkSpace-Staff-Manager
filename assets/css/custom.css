@@ -59,7 +59,7 @@ h3 {
 }
 
 .btn--small {
-    @apply text-(--bg-primary-clr) bg-(--primary-clr) aspect-square max-h-[4vw] inline-flex hover:bg-(--dark-blue-clr);
+    @apply text-(--bg-primary-clr) bg-(--primary-clr) aspect-square inline-flex hover:bg-(--dark-blue-clr);
 }
 
 .btn--xroom {
@@ -87,8 +87,8 @@ h3 {
 }
 
 .rooms {
-    grid-template-columns: repeat(2, 19%) 16.5% repeat(2, 23%);
-    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(2, 1.65fr) 1.5fr repeat(2, 2fr);
+    /* grid-template-rows: auto auto auto; */
     /* grid-auto-columns: 19%; */
     grid-template-areas:
         "room-1 room-1 passage-1 room-2 room-3"
@@ -96,18 +96,40 @@ h3 {
         "room-4 room-4 passage-3 room-5 room-6";
 }
 
+.rooms--original {
+    @apply h-full;
+}
+
+.center > .wrapper--original {
+    @apply w-full aspect-430/243;
+}
+
+.rooms--modified {
+    @apply h-[97%];
+    grid-auto-rows: 34%;
+}
+
+.center > .wrapper--modified {
+    @apply h-[97%] aspect-[416/236];
+}
+
 .room {
     @apply flex flex-col items-center justify-center relative;
 }
 
 .room > span {
-    @apply font-(--fw-label) text-(--bold-text-clr) -mt-[5%] text-shadow-[0_0_4px_var(--bg-secondary-clr)];
+    @apply font-(--fw-label) text-(--bold-text-clr) text-shadow-[0_0_4px_var(--bg-secondary-clr)];
     /* font-size: var(--fs-text); */
-    font-size: 1vw;
+    @apply absolute top-[5%];
+    font-size: 1.2rem;
+}
+
+.room > .assigned-workers {
+    @apply absolute top-[50%] -translate-y-[50%];
 }
 
 .room > button {
-    /* @apply absolute bottom-[5%]; */
+    @apply absolute bottom-[3%] h-[2.5rem];
 }
 
 /* .passage {
@@ -119,88 +141,62 @@ h3 {
     margin-bottom: 0.5%;
 } */
 
+/* removed from here */
+
+/* Room styles */
 #room-1 {
     grid-area: room-1;
-    /* background-color: rgba(0, 128, 0, 0.697); */
-
-    width: 98.5%;
-    height: 96%;
-    /* margin-bottom: 0.4%; */
+    @apply bg-[rgba(0,255,255,0.6)] h-[96%];
 }
 #room-2 {
     grid-area: room-2;
-    /* background-color: rgba(137, 43, 226, 0.697); */
+    @apply bg-[rgba(137,43,226,0.6)];
 }
 #room-3 {
     grid-area: room-3;
-    /* background-color: rgba(0, 128, 0, 0.697); */
+    @apply bg-[rgba(0,255,255,0.6)];
 }
 #room-4 {
     grid-area: room-4;
-    /* background-color: rgba(137, 43, 226, 0.697); */
-    width: 98.5%;
-    height: 99%;
+    @apply bg-[rgba(137,43,226,0.6)];
 }
 #room-5 {
     grid-area: room-5;
-    /* background-color: rgba(0, 128, 0, 0.697); */
-
-    width: 94%;
-    margin-left: 4%;
+    @apply bg-[rgba(0,255,255,0.6)] h-[96%];
 }
 #room-6 {
     grid-area: room-6;
-    /* background-color: rgba(137, 43, 226, 0.697); */
-
-    /* height: 99%; */
+    @apply bg-[rgba(137,43,226,0.6)];
 }
 
+/* Passage styles */
 #passage-1 {
     grid-area: passage-1;
-    /* background-color: rgba(255, 217, 0, 0.697); */
-
-    height: 107%;
-    width: 96%;
+    @apply bg-[rgba(165,42,42,0.6)] mt-[1%];
 }
 #passage-2 {
     grid-area: passage-2;
-    /* background-color: rgba(255, 255, 255, 0.697); */
-
-    width: 98.3%;
-    margin-left: 1%;
-    height: 132%;
-    margin-top: 2%;
+    @apply bg-[rgba(255,255,255,0.6)] ml-[2%] mt-[2%] h-[88%];
 }
 #passage-3 {
     grid-area: passage-3;
-    /* background-color: rgba(255, 217, 0, 0.697); */
+    @apply bg-[rgba(0,0,255,0.6)] mt-[-6%];
+}
 
-    margin-top: 15%;
-    width: 97%;
-    height: 87%;
+/* Grouped custom-margin/height styles */
+#passage-1,
+#passage-3 {
+    @apply ml-[6.5%] h-[104%];
 }
 
 #room-2,
-#room-3 {
-    width: 95%;
-    margin-left: 3%;
-    height: 99%;
-}
-
-#room-5,
-#room-6 {
-    height: 72%;
-    margin-top: 28%;
+#room-5 {
+    @apply ml-[3%];
 }
 
 #room-3,
 #room-6 {
-    margin-left: 2%;
-    width: 96%;
-}
-
-.passage:not(#passage-2) {
-    margin-left: 3%;
+    @apply ml-[3%];
 }
 
 .assigned-workers {

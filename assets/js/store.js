@@ -2,7 +2,7 @@ function getWorkersLS() {
     return JSON.parse(localStorage.getItem("workers")) || [];
 }
 
-function addWorkerLS(workers) {
+function addWorkersLS(workers) {
     localStorage.setItem("workers", JSON.stringify(workers));
 }
 
@@ -24,4 +24,4 @@ function deleteWorkerLS(id) {
 //     localStorage.removeItem("workers");
 // }
 
-export { getWorkersLS, addWorkerLS, /*updateWorkerLS,*/ deleteWorkerLS };
+export { getWorkersLS, addWorkersLS, /*updateWorkerLS,*/ deleteWorkerLS };

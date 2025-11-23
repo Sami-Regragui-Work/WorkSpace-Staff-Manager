@@ -193,7 +193,7 @@ function addExperiencesToDetail(experiences) {
     return experiences
         .map(
             (exp) =>
-                `<div class="mb-4 p-4 border rounded bg-gray-50">
+                `<div class="mb-4 p-4 rounded-(--b-r) bg-gray-50">
             <div class="text-blue-700 font-bold text-lg">${exp.company}</div>
             <div><b>Role:</b> ${exp.role}</div>
             <div><b>Period:</b> ${exp.from} - ${exp.to}</div>
@@ -251,7 +251,7 @@ function storeWorkerInfos(values) {
     //     }]
     // };
     let edit = Boolean(values[0]);
-    const infos = { id: edit ? values[0] : ++GlobalId };
+    const infos = { id: edit ? Number(values[0]) : ++GlobalId };
 
     values.slice(1).forEach((value, ind) => {
         if (ind < 5) {
@@ -261,8 +261,8 @@ function storeWorkerInfos(values) {
             const expFieldInd = (ind - 5) % 4;
             if (!expFieldInd) {
                 if (!expInd) {
-                    infos.experiences = [{}];
-                } else infos.experiences.push({});
+                    infos.experiences = [{ id: expInd + 1 }];
+                } else infos.experiences.push({ id: expInd + 1 });
             }
             infos.experiences[expInd][expLabs[expFieldInd]] = value;
         }
@@ -309,9 +309,11 @@ function setWorkerInfos(infos) {
                     //     )
                     // );
                 }
-                Object.values(row).forEach((expValue, expFieldInd) => {
-                    expInputs[expInd * 4 + expFieldInd].value = expValue;
-                });
+                Object.values(row)
+                    .slice(1)
+                    .forEach((expValue, expFieldInd) => {
+                        expInputs[expInd * 4 + expFieldInd].value = expValue;
+                    });
             });
         }
     });
@@ -346,21 +348,43 @@ function setPreview() {
 
 function addExperience() {
     // e.preventDefault();
-    const newExp = experiences.firstElementChild.cloneNode(true);
+    const newExp = experiences.lastElementChild.cloneNode(true);
     newExp.querySelectorAll("input").forEach((input) => (input.value = ""));
     newExp.setAttribute("id", `experience_${++expCounter}`);
     const labs = newExp.querySelectorAll("label");
     const ins = newExp.querySelectorAll("input");
     for (let ind in Array.from(labs)) {
-        const nInd = Number(ind);
-        labs[ind].htmlFor = `${labs[ind].htmlFor.slice(0, -2)}_${nInd + 2}`;
-        ins[ind].id = `${ins[ind].id.slice(0, -2)}_${nInd + 2}`;
-        ins[ind].name = `${ins[ind].name.slice(0, -2)}_${nInd + 2}`;
+        labs[ind].htmlFor = `${labs[ind].htmlFor.slice(0, -2)}_${expCounter}`;
+        ins[ind].id = `${ins[ind].id.slice(0, -2)}_${expCounter}`;
+        ins[ind].name = `${ins[ind].name.slice(0, -2)}_${expCounter}`;
         toggleError(ins[ind], false);
     }
     // const addBeforeThis = addExperienceBtn.parentNode;
+    const removeBtn = newExp.querySelector(".btn--xroom");
+    removeBtn.classList.remove("hidden");
 
     experiences.appendChild(newExp);
+}
+
+// function ge
+
+function removeExperience(e) {
+    const target = e.target;
+    if (target.tagName == "BUTTON") {
+        const expSection = target.closest("section");
+        const expId = Number(expSection.getAttribute("id").slice(-1));
+        const workerId = Number(
+            expSection.closest("form").querySelector("#id").value
+        );
+        const worker = getListElementById(workers, workerId);
+        worker.experiences = worker.experiences.filter(
+            (exp) => exp.id != expId
+        );
+        updateWorkersArr(worker);
+        addWorkersLS(workers);
+        expSection.remove();
+        // expCounter--;
+    }
 }
 
 function initialize() {
@@ -376,6 +400,7 @@ function initialize() {
     workers.forEach((worker) => {
         if (!worker.where) showAddedWorker(worker);
     });
+    experiences.addEventListener("click", removeExperience);
 }
 
 // initialize();

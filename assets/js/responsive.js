@@ -15,13 +15,13 @@ function roomsBodyRatio() {
     // console/.log(bodyW);
 
     if (thisRatio <= relativeRatio || (bodyW > 1133 && collapsedGlobalVar)) {
-        console.log("modified");
+        // console/.log("modified");
         roomsDiv.classList.add("rooms--modified");
         wrapperDiv.classList.add("wrapper--modified");
         roomsDiv.classList.remove("rooms--original");
         wrapperDiv.classList.remove("wrapper--original");
     } else {
-        console.log("original");
+        // console/.log("original");
         roomsDiv.classList.remove("rooms--modified");
         wrapperDiv.classList.remove("wrapper--modified");
         roomsDiv.classList.add("rooms--original");

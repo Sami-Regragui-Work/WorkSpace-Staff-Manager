@@ -9,6 +9,11 @@ let collapsedGlobalVar = false;
 function sideBarAction() {
     sidebarBtn.addEventListener("click", () => {
         sidebarArrow.firstElementChild.classList.toggle("rotate-180");
+        // if (window.innerHeight <= 780) {
+        //     sidebarArrow.firstElementChild.classList.toggle("rotate-90");
+        //     console.log("smallwindow");
+        //     // sidebarArrow.firstElementChild.classList.toggle("-rotate-90");
+        // }
         sideBar.classList.toggle("min-w-[270px]");
         Array.from(sideBar.children).forEach((node, ind) => {
             if (ind == 0) {

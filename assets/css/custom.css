@@ -285,3 +285,15 @@ article[worker-id] {
 #close-details-modal {
     @apply cursor-pointer;
 }
+
+@media (max-width: 780px) {
+    main {
+        @apply flex-col;
+    }
+    aside path {
+        transform: rotate(90deg);
+    }
+    /* .center {
+        transform: rotate(90deg);
+    } */
+}

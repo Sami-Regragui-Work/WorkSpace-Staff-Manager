@@ -168,10 +168,18 @@
                                         id="experiences"
                                         class="flex flex-col gap-2"
                                     >
-                                        <div
+                                        <section
                                             id="experience_1"
-                                            class="duplicable-area flex flex-col bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-exp) gap-4 rounded-(--b-r)"
+                                            class="duplicable-area flex flex-col bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-exp) gap-4 rounded-(--b-r) relative"
                                         >
+                                            <button
+                                                type="button"
+                                                class="btn btn--xroom text-white absolute top-2 right-2 hidden"
+                                                aria-label="Remove Experience"
+                                                title="Remove"
+                                            >
+                                                &times;
+                                            </button>
                                             <div class="col-span-2 -mt-1">
                                                 <label
                                                     for="exp__company_1"
@@ -236,7 +244,7 @@
                                                     class="error-span danger hidden"
                                                 ></span>
                                             </div>
-                                        </div>
+                                        </section>
                                     </div>
                                     <div class="exp__btns">
                                         <button

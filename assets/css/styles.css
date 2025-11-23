@@ -215,8 +215,14 @@
   .top-1 {
     top: calc(var(--spacing) * 1);
   }
+  .top-2 {
+    top: calc(var(--spacing) * 2);
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
+  }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
@@ -302,9 +308,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
   .h-3 {
     height: calc(var(--spacing) * 3);
   }
@@ -377,17 +380,17 @@
   .flex-3 {
     flex: 3;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
   }
-  .border-collapse {
-    border-collapse: collapse;
-  }
   .origin-center {
     transform-origin: center;
+  }
+  .-rotate-90 {
+    rotate: calc(90deg * -1);
+  }
+  .rotate-90 {
+    rotate: 90deg;
   }
   .rotate-180 {
     rotate: 180deg;
@@ -522,9 +525,6 @@
   .p-\(--padding-g\) {
     padding: var(--padding-g);
   }
-  .p-2 {
-    padding: calc(var(--spacing) * 2);
-  }
   .p-2\.5 {
     padding: calc(var(--spacing) * 2.5);
   }
@@ -586,19 +586,15 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
+  .text-white {
+    color: var(--color-white);
+  }
   .italic {
     font-style: italic;
-  }
-  .underline {
-    text-decoration-line: underline;
   }
   .shadow-sm {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .transition-all {
     transition-property: all;
@@ -1025,6 +1021,14 @@ article[worker-id] {
 .close__modal, #close-details-modal {
   cursor: pointer;
 }
+@media (max-width: 780px) {
+  main {
+    flex-direction: column;
+  }
+  aside path {
+    transform: rotate(90deg);
+  }
+}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -1099,11 +1103,6 @@ article[worker-id] {
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -1151,7 +1150,6 @@ article[worker-id] {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-duration: initial;
       --tw-text-shadow-color: initial;
       --tw-text-shadow-alpha: 100%;

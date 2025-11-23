@@ -61,6 +61,7 @@ function toggleError(field, show, message = "") {
     errSpan.classList.toggle("hidden", !show); // if toggle 2nd param is true it adds otherwise it removes
     field.classList.toggle("input--danger", show);
     field.classList.toggle("input--valid", !show && field.value !== "");
+    errSpan.setAttribute("aria-hidden", String(!show));
 }
 
 function validateField(field, rule) {

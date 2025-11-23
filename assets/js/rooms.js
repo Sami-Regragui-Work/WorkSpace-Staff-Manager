@@ -102,9 +102,9 @@ function showWorkerInRoom(roomObj = null) {
         const worker = getListElementById(workers, workerId);
         if (!worker) return;
         assignedDiv.innerHTML += `
-            <article worker-id="${worker.id}" class="assigned-worker">
+            <article worker-id="${worker.id}" class="assigned-worker" tabindex="0" aria-label="${worker.name} assigned to ${roomObj.title}">
                 <h3>${worker.name}</h3>
-                <button data-type="unassign" class="btn btn--small btn--xroom" title="Remove">
+                <button data-type="unassign" class="btn btn--small btn--xroom" title="Remove" aria-label="Remove ${worker.name} from ${roomObj.title}">
                     &times;
                 </button>
             </article>
@@ -145,7 +145,7 @@ function assignWorker(e) {
     e.target.blur();
     roomsModal.classList.remove("flex");
     roomsModal.classList.add("hidden");
-    roomsModal.ariaHidden = true;
+    roomsModal.setAttribute("aria-hidden", "true");
 
     // assign here
     showWorkerInRoom(room);
@@ -166,6 +166,7 @@ function selectWorker(e) {
             "border-(--primary-clr)",
             "selected-worker"
         );
+        workerArticle.setAttribute("aria-pressed", "false");
         selectedWorkerIds = selectedWorkerIds.filter((id) => id != workerId);
     } else {
         workerArticle.classList.add(
@@ -173,6 +174,7 @@ function selectWorker(e) {
             "border-(--primary-clr)",
             "selected-worker"
         );
+        workerArticle.setAttribute("aria-pressed", "true");
         selectedWorkerIds.push(workerId);
     }
 }
@@ -191,9 +193,9 @@ function fillAssignModal() {
                 const roleText =
                     modalForum.querySelector("#role").options[worker.role].text;
                 workersList.innerHTML += `
-        <article worker-id=${worker.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
+        <article worker-id=${worker.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]' tabindex="0" aria-pressed="false" aria-label="Select ${worker.name}, ${roleText}">
             <div class='aside__worker__left flex gap-3 items-center '>
-                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${worker.photoUrl} onerror="this.src='${fallBackImg}';">
+                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${worker.photoUrl} onerror="this.src='${fallBackImg}';" alt="${worker.name}'s photo">
                 <div class='flex flex-col'>
                     <h3>${worker.name}</h3>
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
@@ -209,7 +211,7 @@ function fillAssignModal() {
 function closeRoomsModal() {
     roomsModal.classList.remove("flex");
     roomsModal.classList.add("hidden");
-    roomsModal.ariaHidden = true;
+    roomsModal.setAttribute("aria-hidden", "true");
     closeBtn.blur();
 }
 
@@ -218,7 +220,7 @@ function pickWorkers(target) {
     roomTarget = target.parentElement;
     roomsModal.classList.remove("hidden");
     roomsModal.classList.add("flex");
-    roomsModal.ariaHidden = false;
+    roomsModal.setAttribute("aria-hidden", "false");
     fillAssignModal();
 }
 

@@ -9,6 +9,11 @@ let collapsedGlobalVar = false;
 function sideBarAction() {
     sidebarBtn.addEventListener("click", () => {
         sidebarArrow.firstElementChild.classList.toggle("rotate-180");
+        sidebarBtn.setAttribute(
+            "aria-expanded",
+            String(!JSON.parse(sidebarBtn.getAttribute("aria-expanded")))
+        );
+
         // if (window.innerHeight <= 780) {
         //     sidebarArrow.firstElementChild.classList.toggle("rotate-90");
         //     console.log("smallwindow");

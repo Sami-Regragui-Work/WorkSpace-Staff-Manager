@@ -98,7 +98,9 @@ function addWorker(e, edit = false) {
         setPreview();
         modal.classList.toggle("hidden");
         modal.classList.toggle("flex");
-        modal.ariaHidden = false;
+        modal.setAttribute("aria-hidden", "false");
+
+        addWorkerBtn.setAttribute("aria-expanded", "true");
     } else {
         const clickTarget = e.target;
         if (clickTarget.tagName == "BUTTON") {
@@ -112,7 +114,8 @@ function addWorker(e, edit = false) {
             inputs.forEach((input) => toggleError(input, false));
             modal.classList.toggle("hidden");
             modal.classList.toggle("flex");
-            modal.ariaHidden = false;
+            modal.setAttribute("aria-hidden", "false");
+            addWorkerBtn.setAttribute("aria-expanded", "true");
         }
     }
 }
@@ -120,27 +123,31 @@ function addWorker(e, edit = false) {
 function closeModal() {
     modal.classList.toggle("hidden");
     modal.classList.toggle("flex");
-    modal.ariaHidden = true;
+    modal.setAttribute("aria-hidden", "true");
     getModalInputs().forEach((input) => input.blur());
     modal.querySelectorAll("button").forEach((btn) => btn.blur());
+
+    modal.setAttribute("aria-modal", "false");
+    addWorkerBtn.setAttribute("aria-expanded", "false");
 }
 
 function showAddedWorker(workerInfos, edit = false) {
     if (!edit) {
         const roleText =
             modalForum.querySelector("#role").options[workerInfos.role].text;
+        // add id to h3 for aria-labelledby and role & tabindex for keyboard activation
         const articleTemplate = `
-        <article worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]'>
+        <article worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]' tabindex="0" aria-labelledby="worker-name-${workerInfos.id}">
             <div class='aside__worker__left flex gap-3 items-center '>
-                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
+                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src="${workerInfos.photoUrl}" alt="Photo of ${workerInfos.name}" onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
-                    <h3>${workerInfos.name}</h3>
+                    <h3 id="worker-name-${workerInfos.id}">${workerInfos.name}</h3>
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
                 </div>
             </div>
             <div class='worker__btns'>
-            <button data-type='edit' class='btn btn--edit '>Edit</button>
-            <button data-type='delete' class='btn btn--delete '>Delete</button>
+            <button data-type='edit' class='btn btn--edit' aria-label="Edit ${workerInfos.name}">Edit</button>
+            <button data-type='delete' class='btn btn--delete' aria-label="Delete ${workerInfos.name}">Delete</button>
             </div>
         </article>
     `;
@@ -153,15 +160,15 @@ function showAddedWorker(workerInfos, edit = false) {
             modalForum.querySelector("#role").options[workerInfos.role].text;
         workerArticle.innerHTML = `
         <div class='aside__worker__left flex gap-3 items-center '>
-                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src=${workerInfos.photoUrl} onerror="this.src='${fallBackImg}';">
+                <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src="${workerInfos.photoUrl}" alt="Photo of ${workerInfos.name}" onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
-                    <h3>${workerInfos.name}</h3>
+                    <h3 id="worker-name-${workerInfos.id}">${workerInfos.name}</h3>
                     <span class='text-(--accent-clr)' style='font-size: var(--fs-text)'>${roleText}</span>
                 </div>
             </div>
             <div class='worker__btns'>
-            <button data-type='edit' class='btn btn--edit '>Edit</button>
-            <button data-type='delete' class='btn btn--delete '>Delete</button>
+            <button data-type='edit' class='btn btn--edit' aria-label="Edit ${workerInfos.name}">Edit</button>
+            <button data-type='delete' class='btn btn--delete' aria-label="Delete ${workerInfos.name}">Delete</button>
             </div>
     `;
     }
@@ -170,20 +177,28 @@ function showAddedWorker(workerInfos, edit = false) {
 function showDetailsModal(target) {
     const workerArticle =
         target.tagName == "ARTICLE" ? target : target.closest("article");
-    if (workerArticle.tagName != "ARTICLE") return;
+    if (!workerArticle || workerArticle.tagName != "ARTICLE") return;
     const workerId = workerArticle.getAttribute("worker-id");
     const worker = getListElementById(workers, workerId);
     fillWorkerDetails(worker);
     detailsModal.classList.remove("hidden");
     detailsModal.classList.add("flex");
-    detailsModal.ariaHidden = false;
+    detailsModal.setAttribute("aria-hidden", "false");
+
+    // accessibility for details dialog
+    detailsModal.setAttribute("role", "dialog");
+    detailsModal.setAttribute("aria-modal", "true");
+    // ensure the details dialog is labelled by the title we created
+    detailsModal.setAttribute("aria-labelledby", "worker-details-title");
 }
 
 function closeDetailsModal() {
     closeDetailsBtn.blur();
     detailsModal.classList.remove("flex");
     detailsModal.classList.add("hidden");
-    detailsModal.ariaHidden = true;
+    detailsModal.setAttribute("aria-hidden", "true");
+
+    detailsModal.setAttribute("aria-modal", "false");
 }
 
 function addExperiencesToDetail(experiences) {
@@ -208,11 +223,13 @@ function fillWorkerDetails(workerInfos) {
     detailsBody.innerHTML = `
         <div class="flex gap-6 items-center pb-6">
             <img src="${workerInfos.photoUrl}"
-                 alt="Profile Photo"
+                 alt="Photo of ${workerInfos.name}"
                  class="w-20 h-20 rounded-full border-4 border-blue-200 object-cover"
                  onerror="this.src='${fallBackImg}';""/>
             <div>
-                <h3 class="text-xl font-bold">${workerInfos.name}</h3>
+                <h3 id="worker-details-title" class="text-xl font-bold">${
+                    workerInfos.name
+                }</h3>
                 <div class="text-blue-600 font-semibold mb-1">${roleText}</div>
                 <div class="text-gray-600 text-sm"><b>Email:</b> ${
                     workerInfos.email
@@ -362,6 +379,8 @@ function addExperience() {
     // const addBeforeThis = addExperienceBtn.parentNode;
     const removeBtn = newExp.querySelector(".btn--xroom");
     removeBtn.classList.remove("hidden");
+    // accessibility for remove button
+    removeBtn.setAttribute("aria-label", `Remove experience ${expCounter}`);
 
     experiences.appendChild(newExp);
 }

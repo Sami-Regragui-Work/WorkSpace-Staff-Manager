@@ -138,7 +138,7 @@ function showAddedWorker(workerInfos, edit = false) {
         // add id to h3 for aria-labelledby and role & tabindex for keyboard activation
         const articleTemplate = `
         <article worker-id=${workerInfos.id} class='flex gap-3 items-center bg-[color-mix(in_oklab,var(--accent-clr)_10%,transparent_90%)] p-(--padding-g) rounded-(--b-r) min-w-[20.5rem]' tabindex="0" aria-labelledby="worker-name-${workerInfos.id}">
-            <div class='aside__worker__left flex gap-3 items-center '>
+            <div class='aside__worker__left flex gap-3 items-center'>
                 <img class='img img--sidebar min-h-[6rem] max-h-[6rem]' src="${workerInfos.photoUrl}" alt="Photo of ${workerInfos.name}" onerror="this.src='${fallBackImg}';">
                 <div class='flex flex-col'>
                     <h3 id="worker-name-${workerInfos.id}">${workerInfos.name}</h3>
@@ -387,20 +387,22 @@ function addExperience() {
 
 // function ge
 
-function removeExperience(e) {
+function removeExperience(e, edit = false) {
     const target = e.target;
     if (target.tagName == "BUTTON") {
         const expSection = target.closest("section");
         const expId = Number(expSection.getAttribute("id").slice(-1));
-        const workerId = Number(
-            expSection.closest("form").querySelector("#id").value
-        );
-        const worker = getListElementById(workers, workerId);
-        worker.experiences = worker.experiences.filter(
-            (exp) => exp.id != expId
-        );
-        updateWorkersArr(worker);
-        addWorkersLS(workers);
+        if (edit) {
+            const workerId = Number(
+                expSection.closest("form").querySelector("#id").value
+            );
+            const worker = getListElementById(workers, workerId);
+            worker.experiences = worker.experiences.filter(
+                (exp) => exp.id != expId
+            );
+            updateWorkersArr(worker);
+            addWorkersLS(workers);
+        }
         expSection.remove();
         // expCounter--;
     }
